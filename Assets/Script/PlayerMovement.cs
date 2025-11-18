@@ -1,30 +1,50 @@
 using UnityEngine;
 
-public class GridTeleportMovement2D : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
+    // Grid size: 3x3, positions from -1 to 1 in x and y
     private const int GridSize = 3;
-    
-    private Vector2Int currentGridPos = new Vector2Int(0, 0);
-    
+    private const float MoveDistance = 1f; // Distance per move (matches grid spacing)
+
+    // Current grid position (start at center)
+    private int currentX = 0;
+    private int currentY = 0;
+
     void Update()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");   
-        
-        Vector2Int newGridPos = currentGridPos;
-        if (horizontal != 0 && vertical == 0)
+        // Get input
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            newGridPos.x += (int)horizontal;
+            Move(0, 1); // Up
         }
-        else if (vertical != 0 && horizontal == 0)
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            newGridPos.y += (int)vertical;
+            Move(0, -1); // Down
         }
-        
-        if (newGridPos.x >= 0 && newGridPos.x < GridSize && newGridPos.y >= 0 && newGridPos.y < GridSize)
+        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            currentGridPos = newGridPos;
-            transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0f);
+            Move(-1, 0); // Left
         }
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Move(1, 0); // Right
+        }
+    }
+
+    private void Move(int deltaX, int deltaY)
+    {
+        // Calculate new position
+        int newX = currentX + deltaX;
+        int newY = currentY + deltaY;
+
+        // Check bounds (grid is -1 to 1 in both axes)
+        if (newX >= -1 && newX <= 1 && newY >= -1 && newY <= 1)
+        {
+            // Update position
+            currentX = newX;
+            currentY = newY;
+            transform.position = new Vector3(currentX * MoveDistance, currentY * MoveDistance, 0);
+        }
+        // If out of bounds, do nothing (player stays put)
     }
 }
