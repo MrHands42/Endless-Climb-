@@ -1,30 +1,84 @@
 using UnityEngine;
 
-public class GridTeleportMovement2D : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    private const int GridSize = 3;
-    
-    private Vector2Int currentGridPos = new Vector2Int(0, 0);
-    
+    private const float MoveDistance = 2.5f;
+    private const float GridMin = -2.5f; 
+    private const float GridMax = 2.5f;  
+    private float currentX = 0f;
+    private float currentY = 0f;
+
+    private const float DashDuration = 0.2f;
+    private bool isDashing = false;
+
+    private Animator animator;
+
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     void Update()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");   
-        
-        Vector2Int newGridPos = currentGridPos;
-        if (horizontal != 0 && vertical == 0)
+        if (!isDashing)
         {
-            newGridPos.x += (int)horizontal;
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                StartDash(0f, MoveDistance);
+            }
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                StartDash(0f, -MoveDistance);
+            }
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                StartDash(-MoveDistance, 0f);
+            }
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                StartDash(MoveDistance, 0f);
+            }
         }
-        else if (vertical != 0 && horizontal == 0)
+    }
+
+    private void StartDash(float deltaX, float deltaY)
+    {
+        float newX = currentX + deltaX;
+        float newY = currentY + deltaY;
+
+        if (newX >= GridMin && newX <= GridMax && newY >= GridMin && newY <= GridMax)
         {
-            newGridPos.y += (int)vertical;
+            StartCoroutine(DashCoroutine(newX, newY));
         }
-        
-        if (newGridPos.x >= 0 && newGridPos.x < GridSize && newGridPos.y >= 0 && newGridPos.y < GridSize)
+    }
+
+    private System.Collections.IEnumerator DashCoroutine(float targetX, float targetY)
+    {
+        isDashing = true;
+
+        if (animator != null)
         {
-            currentGridPos = newGridPos;
-            transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0f);
+            animator.SetTrigger("Dash");
         }
+
+        // Get start position
+        Vector3 startPos = transform.position;
+        Vector3 targetPos = new Vector3(targetX, targetY, 0f);
+
+        float elapsedTime = 0f;
+        while (elapsedTime < DashDuration)
+        {
+            transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime / DashDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = targetPos;
+
+
+        currentX = targetX;
+        currentY = targetY;
+
+        isDashing = false;
     }
 }
