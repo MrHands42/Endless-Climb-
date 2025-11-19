@@ -44,7 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1422758a886fc1040964373026919f63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distance_box: 2.5
+  outside_box_y: 6.5
+  outside_box_x: 10
   warning: {fileID: 3386816001187073031, guid: 8f68328582c899f4f8e21dad17304195, type: 3}
   rock: {fileID: 9111343341070977449, guid: 0b90f3107ca5d3044900936d05aadce9, type: 3}
-  rockPos: {x: 0, y: 6.5, z: -1}
+  goat: {fileID: 9111343341070977449, guid: 83bca838331543b4998af13271602a58, type: 3}
+  vertObsWarning_offset: 2
+  bird: {fileID: 9111343341070977449, guid: 40b7fc406cdd5fd4683e41fa222c4f90, type: 3}
+  BirdPos: {x: 0, y: 0, z: 0}
+  BirdWarning_offset: 3.5
   spawnTime: 2
