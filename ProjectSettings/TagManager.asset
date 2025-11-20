@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ObstacleSpawner
   - Tiles
+  - Obstacle
   layers:
   - Default
   - TransparentFX
