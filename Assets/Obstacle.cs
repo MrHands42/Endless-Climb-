@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using UnityEngine.Events;
 
 public class FallingObstacle : MonoBehaviour
 {
@@ -69,4 +71,69 @@ public class HorizontalObstacle : MonoBehaviour
     }
 }
 
+public class VectorObstacle : MonoBehaviour
+{
+    public float speed = 10f;
+    public float death = -6.5f;
+    public Vector3 direction = Vector3.zero;
 
+    private GameObject tiles;
+    private GameObject target;
+
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+        transform.position += (direction * speed) * Time.deltaTime;
+
+        if (transform.position.y < death)
+        {
+            Debug.Log("Destroyed " + gameObject.name);
+            Destroy(gameObject);
+        }
+    }
+}
+
+public class MonkeyObstacle : MonoBehaviour
+{
+    public float deathTimer = 10f;
+    private float deathCount = 0;
+
+    public float throwInterval = 3;
+    private float throwCount = 0;
+
+    public UnityEvent ThrowBanana;
+
+
+    public void Start()
+    {
+        throwCount = 2;
+        ThrowBanana.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().BananaSignal);
+    }
+
+    public void Update()
+    {
+        if (deathCount < deathTimer)
+        {
+            deathCount += Time.deltaTime;
+        }
+        else
+        {
+            Debug.Log("Destroyed" + gameObject.name);
+            Destroy(gameObject);
+        }
+        
+        if (throwCount < throwInterval)
+        {
+            throwCount += Time.deltaTime;
+        }
+        else
+        {
+            ThrowBanana.Invoke();
+            throwCount = 0;
+        }
+    }
+}

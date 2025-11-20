@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -7,17 +8,22 @@ using UnityEngine.Events;
 
 public class Warning : MonoBehaviour
 {
-
-    public UnityEvent WarningGone;
+    public string warningType = "null";
+    public UnityEvent WarningGoneNormal;
+    public UnityEvent WarningGoneBanana;
+    public UnityEvent WarningGoneMonkey;
     public float flashTime = 0.01f;
     public float flashcount = 5f;
     private float flash = 0f;
     private float timer = 0;
     public SpriteRenderer sprite;
+
     // Start is called before the first frame update
     void Start()
     {
-        WarningGone.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateObstacle);
+        WarningGoneNormal.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateObstacle);
+        WarningGoneBanana.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateBanana);
+        WarningGoneMonkey.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateMonkey);
         sprite.color = new Color(255,255,255,255);
         flash = 0;
     }
@@ -39,18 +45,30 @@ public class Warning : MonoBehaviour
                 sprite.color = new Color(255,255,255,255);
             }
             flash += 0.5f;
-            checkDestroy();
+            checkDestroy(warningType);
             timer = 0;
         }
     }
 
-    void checkDestroy()
+    void checkDestroy(string type)
     {
         if (flash == flashcount)
         {
-            WarningGone.Invoke();
+            if (type == "goat" || type == "rock" || type == "bird")
+            {
+                WarningGoneNormal.Invoke();
+            }
+            else if (type == "banana")
+            {
+                WarningGoneBanana.Invoke();
+
+            }
+            else if (type == "monkey")
+            {
+                WarningGoneMonkey.Invoke();
+            }
             Debug.Log("Warning Destroyed");
-            Destroy(gameObject);
+            Destroy(gameObject); 
         }
     }
 }
