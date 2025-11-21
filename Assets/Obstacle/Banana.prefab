@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7470329897912285472}
   - component: {fileID: 8095121681772434773}
   - component: {fileID: 9137306651389320911}
-  - component: {fileID: -6681840805204299669}
+  - component: {fileID: -862004586219691703}
   m_Layer: 0
   m_Name: Banana
   m_TagString: Obstacle
@@ -147,15 +147,30 @@ MonoBehaviour:
   speed: 10
   death: -6.5
   direction: {x: 0, y: 0, z: 0}
---- !u!114 &-6681840805204299669
-MonoBehaviour:
+--- !u!50 &-862004586219691703
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6353288593655491265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c7bfcce8414e2b4f9b2279247468bb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
