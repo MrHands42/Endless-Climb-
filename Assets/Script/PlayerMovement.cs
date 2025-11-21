@@ -48,11 +48,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (newX >= GridMin && newX <= GridMax && newY >= GridMin && newY <= GridMax)
         {
-            StartCoroutine(DashCoroutine(newX, newY));
+            StartCoroutine(DashCoroutine(newX, newY, deltaY));  // Tambahan: Pass deltaY ke coroutine
         }
     }
 
-    private System.Collections.IEnumerator DashCoroutine(float targetX, float targetY)
+    private System.Collections.IEnumerator DashCoroutine(float targetX, float targetY, float deltaY)  // Tambahan: Parameter deltaY
     {
         isDashing = true;
 
@@ -75,10 +75,14 @@ public class PlayerMovement : MonoBehaviour
 
         transform.position = targetPos;
 
-
         currentX = targetX;
         currentY = targetY;
 
         isDashing = false;
+
+        if (ScoreManager.instance != null && deltaY > 0)
+        {
+            ScoreManager.instance.AddVerticalScore(deltaY);
+        }
     }
 }

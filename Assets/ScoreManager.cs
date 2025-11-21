@@ -1,63 +1,83 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-public static ScoreManager instance;
+    public static ScoreManager instance;
 
-    public Text scoreText;
-    public Text highscoreText;
+    public Text pointText;
+    public Text highScoreText;
+    
+    private int point = 0;  
+    private int highScore = 0;
+    
+    private float maxHeight = 0f;  
 
-    private int score = 0;
-    private int highscore = 0;
-
-    private bool isPaused = false;
-
-    private void Awake()
+    void Awake()
     {
         if (instance == null)
+        {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
+        {
             Destroy(gameObject);
+        }
     }
-
+    
     void Start()
     {
-        highscore = PlayerPrefs.GetInt("highscore", 0);
-        UpdateScoreUI();
+        // Muat high score dari PlayerPrefs
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        
+        // Update UI awal
+        UpdateUI();
     }
 
-    void UpdateScoreUI()
+    public void AddVerticalScore(float deltaY)
     {
-        scoreText.text = score + " POINTS";
-        highscoreText.text = "HIGHSCORE: " + highscore;
-    }
-
-    public void AddPoint(int value = 1)
-    {
-        if (!isPaused)
+        if (deltaY > 0)
         {
-            score += value;
-            UpdateScoreUI();
-
-            if (score > highscore)
+            maxHeight += deltaY;
+            
+            point = Mathf.FloorToInt(maxHeight * 10);
+            
+            if (point > highScore)
             {
-                highscore = score;
-                PlayerPrefs.SetInt("highscore", highscore);
+                highScore = point;
+                PlayerPrefs.SetInt("HighScore", highScore);
                 PlayerPrefs.Save();
             }
+            
+            UpdateUI();
         }
+    }
+
+    public void AddPoint()
+    {
+        point += 1;
+        UpdateUI();
     }
 
     public void ResetScore()
     {
-        score = 0;
-        UpdateScoreUI();
+        point = 0;
+        maxHeight = 0f;
+        UpdateUI();
     }
 
-    public void SetPause(bool pauseState)
+    private void UpdateUI()
     {
-        isPaused = pauseState;
+        if (pointText != null)
+        {
+            pointText.text = point.ToString() + " POINTS";
+        }
+        if (highScoreText != null)
+        {
+            highScoreText.text = "HIGHSCORE: " + highScore.ToString();
+        }
     }
 }
