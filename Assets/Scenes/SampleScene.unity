@@ -765,6 +765,10 @@ PrefabInstance:
       value: ObstacleSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 2945481482066050332, guid: 3e2e8825c6cd7ae449e90a88d52b36fa, type: 3}
+      propertyPath: zeus
+      value: 
+      objectReference: {fileID: 902059377037850554, guid: 57d28d6bbd7295c45bef7d796564e543, type: 3}
+    - target: {fileID: 2945481482066050332, guid: 3e2e8825c6cd7ae449e90a88d52b36fa, type: 3}
       propertyPath: tiles
       value: 
       objectReference: {fileID: 1371939174}
@@ -776,6 +780,14 @@ PrefabInstance:
       propertyPath: monkey
       value: 
       objectReference: {fileID: 6131478064774574659, guid: 853f4cc0afd591846bbf339fabaa1618, type: 3}
+    - target: {fileID: 2945481482066050332, guid: 3e2e8825c6cd7ae449e90a88d52b36fa, type: 3}
+      propertyPath: strike
+      value: 
+      objectReference: {fileID: 670282989521966571, guid: d0ce4c63d33458546a82edded3e52a5f, type: 3}
+    - target: {fileID: 2945481482066050332, guid: 3e2e8825c6cd7ae449e90a88d52b36fa, type: 3}
+      propertyPath: zeusSpawn
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 2945481482066050332, guid: 3e2e8825c6cd7ae449e90a88d52b36fa, type: 3}
       propertyPath: monkeySpawn
       value: 40
