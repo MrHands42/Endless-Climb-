@@ -12,6 +12,8 @@ public class Warning : MonoBehaviour
     public UnityEvent WarningGoneNormal;
     public UnityEvent WarningGoneBanana;
     public UnityEvent WarningGoneMonkey;
+    public UnityEvent WarningGoneZeus;
+    public UnityEvent WarningGoneStrike;
     public float flashTime = 0.01f;
     public float flashcount = 5f;
     private float flash = 0f;
@@ -24,6 +26,8 @@ public class Warning : MonoBehaviour
         WarningGoneNormal.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateObstacle);
         WarningGoneBanana.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateBanana);
         WarningGoneMonkey.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateMonkey);
+        WarningGoneZeus.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateZeus);
+        WarningGoneStrike.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateStrike);
         sprite.color = new Color(255,255,255,255);
         flash = 0;
     }
@@ -66,6 +70,14 @@ public class Warning : MonoBehaviour
             else if (type == "monkey")
             {
                 WarningGoneMonkey.Invoke();
+            }
+            else if (type == "zeus")
+            {
+                WarningGoneZeus.Invoke();
+            }
+            else if (type == "strike")
+            {
+                WarningGoneStrike.Invoke();
             }
             Debug.Log("Warning Destroyed");
             Destroy(gameObject); 

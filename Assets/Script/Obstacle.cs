@@ -137,3 +137,53 @@ public class MonkeyObstacle : MonoBehaviour
         }
     }
 }
+
+public class ZeusObstacle : MonoBehaviour
+{
+    public float deathTimer = 3f;
+    private float deathCount = 0;
+    public UnityEvent zeusStrike;
+
+    public void Start()
+    {
+        zeusStrike.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().LightningSignal);
+    }
+
+    public void Update()
+    {
+        if (deathCount < deathTimer)
+        {
+            deathCount += Time.deltaTime;
+        }
+        else
+        {
+            zeusStrike.Invoke();
+            Debug.Log("Destroyed" + gameObject.name);
+            Destroy(gameObject);
+        }
+    }
+}
+
+public class LightningObstacle : MonoBehaviour
+{
+    public float deathTimer = 0.5f;
+    private float deathCount = 0;
+
+    public void Start()
+    {
+       
+    }
+
+    public void Update()
+    {
+        if (deathCount < deathTimer)
+        {
+            deathCount += Time.deltaTime;
+        }
+        else
+        {
+            Debug.Log("Destroyed" + gameObject.name);
+            Destroy(gameObject);
+        }
+    }
+}

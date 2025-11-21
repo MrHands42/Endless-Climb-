@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class ObstacleSpawner : MonoBehaviour
 {
@@ -45,6 +46,14 @@ public class ObstacleSpawner : MonoBehaviour
     public GameObject tiles;
     private GameObject target;
 
+    [Header("Zeus Obstacle")]
+    public GameObject zeus;
+    public GameObject strike;
+    public float zeusSpawn = 55;
+    private float zeusTimer = 10;
+    private Vector3 ZeusPos = new Vector3(0,0,-1);
+    private Vector3 strikePos = new Vector3(0,0,-1);
+    private Dictionary<int,Vector3> strikeDict = new Dictionary<int, Vector3>();
 
     // other shit
     private int obstacleObject = 0; // 0 = rock, 1 = goat, 2 = bird, 3 = monkey, 4 = banana
@@ -52,7 +61,7 @@ public class ObstacleSpawner : MonoBehaviour
     private int obstaclePool = 4;
     private GameObject warningClone;
 
-
+    [Header("Spawn Rate")]
     public float spawnTime = 2;
     private float timer = 0;
 
@@ -62,6 +71,8 @@ public class ObstacleSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        strikeDict[1] = new Vector3(0,0,-1);
+        strikeDict[2] = new Vector3(0,0,-1);
         player = GameObject.FindGameObjectWithTag("Player");
         obstaclePool = 3;
         vertObsPos = new Vector3(0,outside_box_y,-1); 
@@ -72,6 +83,7 @@ public class ObstacleSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ZeusCooldown();
         MonkeyCooldown();
         if (timer < spawnTime)
         {
@@ -171,8 +183,7 @@ public class ObstacleSpawner : MonoBehaviour
         {
             var pos_offset = Random.Range(0,3);
             MonkeyPos = new Vector3(-distance_box + distance_box * pos_offset,4.5f,-1);
-            obstaclePosition = MonkeyPos;
-            warningPosition = obstaclePosition;
+            warningPosition = MonkeyPos;
 
             GameObject instance = Instantiate(warning,warningPosition,transform.rotation);
             instance.GetComponent<Warning>().warningType = "monkey";
@@ -210,4 +221,62 @@ public class ObstacleSpawner : MonoBehaviour
         instance.GetComponent<Warning>().warningType = "banana";
     }
 
+
+    public void CreateZeus()
+    {
+        Debug.Log("Zues Made");
+        GameObject zeusInstance = Instantiate(zeus,ZeusPos,transform.rotation);
+    }
+
+    public void ZeusCooldown()
+    {
+        if (zeusTimer < zeusSpawn)
+        {
+            zeusTimer += Time.deltaTime;
+        }
+        else
+        {
+            GameObject instance = Instantiate(warning,ZeusPos,transform.rotation);
+            instance.GetComponent<Warning>().warningType = "zeus";
+
+            zeusTimer = 0;
+        }
+    }
+
+    public void CreateStrike()
+    {
+        for (int i = 1; i < 3; i++)
+        {
+            Debug.Log("Strike Made");
+            GameObject strikeInstance = Instantiate(strike,strikeDict[i] - new Vector3(0,2.5f,0),transform.rotation);
+        }
+
+    }
+
+    public void LightningSignal()
+    {
+        int randomNum = Random.Range(0,3);
+        int randomNum2 = Random.Range(0,3);
+        while (randomNum2 == randomNum)
+        {
+            randomNum2 = Random.Range(0,3);
+        }
+
+        strikeDict[1] = new Vector3(-distance_box + distance_box*randomNum,distance_box,-1);
+        strikeDict[2] = new Vector3(-distance_box + distance_box*randomNum2,distance_box,-1);
+        
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject instance = Instantiate(warning,strikeDict[1] - new Vector3(0,distance_box*i),transform.rotation);
+            instance.GetComponent<Warning>().warningType = "strike";
+            instance.GetComponent<Warning>().flashcount = 10f;
+        }
+        
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject instance = Instantiate(warning,strikeDict[2] - new Vector3(0,distance_box*i),transform.rotation);
+            instance.GetComponent<Warning>().warningType = "strike";
+            instance.GetComponent<Warning>().flashcount = 10f;
+        }
+    }
 }
