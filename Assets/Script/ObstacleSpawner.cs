@@ -49,7 +49,7 @@ public class ObstacleSpawner : MonoBehaviour
     [Header("Zeus Obstacle")]
     public GameObject zeus;
     public GameObject strike;
-    public float zeusSpawn = 70;
+    public float zeusSpawn = 55;
     private float zeusTimer = 10;
     private Vector3 ZeusPos = new Vector3(0,0,-1);
     private Vector3 strikePos = new Vector3(0,0,-1);
