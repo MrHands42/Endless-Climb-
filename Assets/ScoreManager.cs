@@ -4,50 +4,60 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-private const string HighScoreKey = "HighScore";
+public static ScoreManager instance;
 
-    public static int score = 0;
-    //public static int highScore = 0;
-    private static int scoreMilestone = 0;
+    public Text scoreText;
+    public Text highscoreText;
 
-    public static PointManager instance;
+    private int score = 0;
+    private int highscore = 0;
 
-    void Awake()
+    private bool isPaused = false;
+
+    private void Awake()
     {
         if (instance == null)
-        {
             instance = this;
-            DontDestroyOnLoad(gameObject); 
-        }
         else
-        {
             Destroy(gameObject);
-        }
     }
 
     void Start()
     {
-        //LoadHighScore();
+        highscore = PlayerPrefs.GetInt("highscore", 0);
+        UpdateScoreUI();
     }
 
-    public static void AddPoints(int pointsToAdd)
+    void UpdateScoreUI()
     {
-        score += pointsToAdd;
-        
-  
-        if (score / 100 > scoreMilestone)
+        scoreText.text = score + " POINTS";
+        highscoreText.text = "HIGHSCORE: " + highscore;
+    }
+
+    public void AddPoint(int value = 1)
+    {
+        if (!isPaused)
         {
-            scoreMilestone = score / 100;
-            if (EnemySpawner.instance != null)
+            score += value;
+            UpdateScoreUI();
+
+            if (score > highscore)
             {
-                EnemySpawner.instance.IncreaseMaxEnemies();
+                highscore = score;
+                PlayerPrefs.SetInt("highscore", highscore);
+                PlayerPrefs.Save();
             }
         }
     }
-    
-    public static void ResetScore()
+
+    public void ResetScore()
     {
         score = 0;
-        scoreMilestone = 0;
+        UpdateScoreUI();
+    }
+
+    public void SetPause(bool pauseState)
+    {
+        isPaused = pauseState;
     }
 }
