@@ -9,10 +9,21 @@ public class ButtonManager : MonoBehaviour
 
     [Header("UI References")]
     public GameObject pauseMenuUI;
+    public GameObject gameOverUI;
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            print("WTF DUDE");
+            Destroy(gameObject);
+        }
+
     }
 
     void Update()
@@ -38,6 +49,7 @@ public class ButtonManager : MonoBehaviour
 
     private void PauseGame()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.BackButton);
         Time.timeScale = 0f;
         if (pauseMenuUI != null)
         {
@@ -48,6 +60,7 @@ public class ButtonManager : MonoBehaviour
 
     private void ResumeGame()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
         Time.timeScale = 1f;
         if (pauseMenuUI != null)
         {
@@ -57,13 +70,19 @@ public class ButtonManager : MonoBehaviour
 
     public void Restart()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        pauseMenuUI.SetActive(false);
+        gameOverUI.SetActive(false);
     }
 
     public void BackToMenu()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.BackButton);
         Time.timeScale = 1f;
-        SceneManager.LoadScene("StartScene");
+        SceneManager.LoadScene("MainMenu");
+        pauseMenuUI.SetActive(false);
+        gameOverUI.SetActive(false);
     }
 }

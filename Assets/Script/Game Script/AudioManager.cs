@@ -60,6 +60,11 @@ public class AudioManager : MonoBehaviour
         source.Play();
     }
 
+    public void stopBGM()
+    {
+        source.Stop();
+    }
+
     public void Play(SFX sfx)
     {
         AudioClip clip = null;
@@ -78,7 +83,7 @@ public class AudioManager : MonoBehaviour
             case SFX.WarningVariation: clip = warningVariation; break;
             case SFX.PowerUp: clip = powerUp; break;
             case SFX.BackButton: clip = backButton; break;
-            case SFX.EndScreen: clip = endScreen; break;
+            case SFX.EndScreen: clip = endScreen; stopBGM(); break;
             case SFX.GeneralButton: clip = generalButton; break;
             case SFX.PlayButton: clip = playButton; break;
         }

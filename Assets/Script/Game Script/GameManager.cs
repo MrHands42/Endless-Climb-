@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
         {
             gameOverUI.SetActive(true);
         }
+        AudioManager.AudioManagerInstance.Play(SFX.EndScreen);
         Debug.Log("Game Over!");
     }
 }

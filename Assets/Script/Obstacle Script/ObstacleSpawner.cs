@@ -88,7 +88,6 @@ public class ObstacleSpawner : MonoBehaviour
     {
         float t = Mathf.Clamp01(Time.timeSinceLevelLoad / speedUpDuration);
         spawnTime = Mathf.Lerp(slowSpawn, fastSpawn, t);
-        print(spawnTime);
         ZeusCooldown();
         MonkeyCooldown();
         if (timer < spawnTime)
