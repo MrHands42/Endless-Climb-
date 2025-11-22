@@ -49,11 +49,11 @@ MonoBehaviour:
   spawnInterval: 1
   powerUpList:
   - name: 
-    prefab: {fileID: 9111343341070977449, guid: 84468b4a3e166d649bdcce8544a46f13, type: 3}
+    prefab: {fileID: 9111343341070977449, guid: a7b784ee31bfa0d4aa4b3743f81e28e4, type: 3}
     spawnChance: 100
     fallSpeed: 2
   - name: 
-    prefab: {fileID: 9111343341070977449, guid: 4a82e6b8273475a4faf0aeb94b1f0e8f, type: 3}
+    prefab: {fileID: 9111343341070977449, guid: 497428edeff481f43a6a81460efc8d9e, type: 3}
     spawnChance: 100
     fallSpeed: 2
   - name: wd

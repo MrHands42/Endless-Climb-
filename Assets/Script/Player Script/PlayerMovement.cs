@@ -43,6 +43,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartDash(float deltaX, float deltaY)
     {
+        AudioManager.AudioManagerInstance.Play(SFX.ChangeGrid);
+
         float newX = currentX + deltaX;
         float newY = currentY + deltaY;
 
