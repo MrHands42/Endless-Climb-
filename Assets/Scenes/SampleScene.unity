@@ -1077,7 +1077,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -634741837083612066, guid: 3f034c2f15442dc4fb5cdf941b6a6ec8, type: 3}
       propertyPath: spawnInterval
-      value: 1000
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -634741837083612066, guid: 3f034c2f15442dc4fb5cdf941b6a6ec8, type: 3}
       propertyPath: powerUpList.Array.data[0].prefab
