@@ -51,12 +51,12 @@ MonoBehaviour:
   - name: 
     prefab: {fileID: 9111343341070977449, guid: a7b784ee31bfa0d4aa4b3743f81e28e4, type: 3}
     spawnChance: 100
-    fallSpeed: 2
+    fallSpeed: 4
   - name: 
     prefab: {fileID: 9111343341070977449, guid: 497428edeff481f43a6a81460efc8d9e, type: 3}
     spawnChance: 100
-    fallSpeed: 2
+    fallSpeed: 4
   - name: wd
     prefab: {fileID: 9111343341070977449, guid: e1add0d5e80ce0d45b1cdaa286fa1650, type: 3}
     spawnChance: 100
-    fallSpeed: 2
+    fallSpeed: 4

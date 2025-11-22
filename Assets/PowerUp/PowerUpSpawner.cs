@@ -20,7 +20,7 @@ public class PowerUpSpawner : MonoBehaviour
         public GameObject prefab;
         [Range(0, 100)]
         public float spawnChance = 50f;
-        public float fallSpeed = 2f;
+        public float fallSpeed = 4f;
     }
 
     [Header("List Power Ups")]
@@ -39,8 +39,8 @@ public class PowerUpSpawner : MonoBehaviour
 
     void TrySpawnPowerUp()
     {
-        // 1. Pilih Random satu Power Up dari list
-        if (powerUpList.Length == 0) return; // Pengaman kalau list kosong
+        // Pilih Random satu Power Up dari list
+        if (powerUpList.Length == 0) return;
 
         int randomIndex = Random.Range(0, powerUpList.Length);
         PowerUpData selectedPowerUp = powerUpList[randomIndex];

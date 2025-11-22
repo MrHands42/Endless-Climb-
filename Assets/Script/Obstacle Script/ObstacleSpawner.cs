@@ -11,9 +11,9 @@ public class ObstacleSpawner : MonoBehaviour
 
     [Header("Grid Componenets")]
     // Sizes
-    public float distance_box = 2.5f; // jarak antar kotak
-    public float outside_box_y = 6.5f; // keluar screen (y axis)
-    public float outside_box_x = 10f; // keluar screen (x axis)
+    public float distance_box = 2.5f;    // jarak antar kotak
+    public float outside_box_y = 6.5f;   // keluar screen (y axis)
+    public float outside_box_x = 10f;    // keluar screen (x axis)
 
     [Header("Warning")]
     // Warning
@@ -28,7 +28,7 @@ public class ObstacleSpawner : MonoBehaviour
     public float vertObsWarning_offset = 2;
 
     [Header("Horizontal Obstacles")]
-    // Obstacles:bird
+    // Obstacles: bird
     public GameObject bird;
     private Vector3 BirdPos = Vector3.zero;
     public float BirdWarning_offset = 3.5f;

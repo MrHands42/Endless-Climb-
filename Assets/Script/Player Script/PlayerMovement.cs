@@ -43,14 +43,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartDash(float deltaX, float deltaY)
     {
-        AudioManager.AudioManagerInstance.Play(SFX.ChangeGrid);
-
         float newX = currentX + deltaX;
         float newY = currentY + deltaY;
 
         if (newX >= GridMin && newX <= GridMax && newY >= GridMin && newY <= GridMax)
         {
             StartCoroutine(DashCoroutine(newX, newY, deltaY));  // Tambahan: Pass deltaY ke coroutine
+            AudioManager.AudioManagerInstance.Play(SFX.ChangeGrid);
         }
     }
 
@@ -70,8 +69,9 @@ public class PlayerMovement : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < DashDuration)
         {
+            while (Time.timeScale == 0) yield return null; 
             transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime / DashDuration);
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime;  // Kuubah jadi unscaledDeltaTime supaya dashnya ga aneh
             yield return null;
         }
 
