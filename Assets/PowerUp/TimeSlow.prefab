@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 1769930759865772672}
   - component: {fileID: 8909711786881031222}
   - component: {fileID: -9136993150380717326}
-  - component: {fileID: -8378472272476891512}
+  - component: {fileID: 2874339136785037329}
+  - component: {fileID: -3121945379900445991}
   m_Layer: 0
   m_Name: TimeSlow
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131,7 +132,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-8378472272476891512
+--- !u!114 &2874339136785037329
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,8 +141,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 9111343341070977449}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8be44f8021182041b4799a26ae122f3, type: 3}
+  m_Script: {fileID: 11500000, guid: edb5de9ff51ff1342a1d2ae735b67d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+--- !u!114 &-3121945379900445991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9111343341070977449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0890a4e9cba417143a0a19d46d78079f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
   death: -6.5
+  soundEffect: 16
+  slowFactor: 0.5
+  duration: 5

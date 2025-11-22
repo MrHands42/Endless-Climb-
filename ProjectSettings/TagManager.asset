@@ -9,6 +9,7 @@ TagManager:
   - Obstacle
   - GameOver
   - GamePause
+  - PowerUp
   layers:
   - Default
   - TransparentFX

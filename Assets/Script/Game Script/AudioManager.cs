@@ -18,7 +18,13 @@ public enum SFX
     BackButton,
     EndScreen,
     GeneralButton,
-    PlayButton
+    PlayButton,
+
+    Dash,
+    TimeSlow,
+    Impact,
+    Invincibility,
+    Shield
 }
 
 public class AudioManager : MonoBehaviour
@@ -27,8 +33,10 @@ public class AudioManager : MonoBehaviour
 
     [Header("AUDIO SOURCE")]
     public AudioSource source;
+
     [Header("BGM")]
     public AudioClip BGM;
+
     [Header("AUDIO GAMPELAY")]
     public AudioClip rockAudio;
     public AudioClip goatAudio;
@@ -41,6 +49,13 @@ public class AudioManager : MonoBehaviour
     public AudioClip warning;
     public AudioClip warningVariation;
     public AudioClip powerUp;
+
+    public AudioClip dash;
+    public AudioClip dio_time_stop;
+    public AudioClip impacts;
+    public AudioClip invincibility;
+    public AudioClip shield; 
+
     [Header("AUDIO UI")]
     public AudioClip backButton;
     public AudioClip endScreen;
@@ -86,6 +101,15 @@ public class AudioManager : MonoBehaviour
             case SFX.EndScreen: clip = endScreen; stopBGM(); break;
             case SFX.GeneralButton: clip = generalButton; break;
             case SFX.PlayButton: clip = playButton; break;
+
+            case SFX.Dash: clip = dash; break;
+            case SFX.TimeSlow: clip = dio_time_stop; break;
+            case SFX.Impact: clip = impacts; break;
+            case SFX.Invincibility: clip = invincibility; break;
+            case SFX.Shield: clip = shield; break;
+
+
+
         }
 
         if (clip != null)
