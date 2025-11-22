@@ -16,6 +16,8 @@ public class Collector : MonoBehaviour
         {
             item.Collect();
             Debug.Log("Collected item!");
+            return;
+
         }
         else if (obstacleTags.Contains(collision.tag))
         {
@@ -23,6 +25,14 @@ public class Collector : MonoBehaviour
             if (isInvincible)
             {
                 Debug.Log("Nabrak Obstacle, tapi aman aja lek.");
+                return;
+            }
+
+            if (hasShield)
+            {
+                Debug.Log("Shield pecah cik :0");
+                BreakShield();
+                Destroy(collision.gameObject);
                 return;
             }
 
@@ -49,11 +59,29 @@ public class Collector : MonoBehaviour
     public SpriteRenderer invincibilityRenderer;
     private bool isInvincible = false;
 
+    [Header("Shield Visuals")]
+    public GameObject shieldVisual; 
+    private bool hasShield = false; 
+
     public void ActivateInvincibility(float duration)
     {
         StopAllCoroutines();
         StartCoroutine(InvincibilityRoutine(duration));
     }
+
+    public void ActivateShield()
+    {
+        hasShield = true;
+        if (shieldVisual != null) shieldVisual.SetActive(true);
+    }
+
+    public void BreakShield()
+    {
+        hasShield = false;
+        if (shieldVisual != null) shieldVisual.SetActive(false);
+        // sfx shield pecahhhh
+    }
+
 
     IEnumerator InvincibilityRoutine(float duration)
     {

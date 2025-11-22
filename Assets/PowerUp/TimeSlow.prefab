@@ -158,6 +158,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   death: -6.5
-  soundEffect: 10
-  slowFactor: 0.7
+  soundEffect: 16
+  slowFactor: 0.5
   duration: 5

@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   death: -6.5
-  soundEffect: 10
+  soundEffect: 18
   duration: 3
 --- !u!212 &8909711786881031222
 SpriteRenderer:

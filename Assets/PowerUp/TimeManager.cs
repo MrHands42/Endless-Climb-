@@ -42,7 +42,6 @@ public class TimeManager : MonoBehaviour
             float currentScale = Mathf.Lerp(startSlowFactor, 1f, progress);
 
             Time.timeScale = currentScale;
-
             Time.fixedDeltaTime = defaultFixedDeltaTime * currentScale;
 
             yield return null;

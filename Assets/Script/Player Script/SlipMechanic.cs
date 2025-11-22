@@ -35,6 +35,7 @@ public class SlipMechanic : MonoBehaviour
                 RopeSlip();
             }
         }
+
         else
         {
             timerDiam = 0f;
@@ -64,5 +65,4 @@ public class SlipMechanic : MonoBehaviour
             Time.timeScale = 0f;    
         }
     }
-
 }
