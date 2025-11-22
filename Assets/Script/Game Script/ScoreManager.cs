@@ -38,6 +38,7 @@ public class ScoreManager : MonoBehaviour
     {
         // Muat high score dari PlayerPrefs
         highScore = PlayerPrefs.GetInt("HighScore", 0);
+        point = 0;
         
         // Update UI awal
         UpdateUI();

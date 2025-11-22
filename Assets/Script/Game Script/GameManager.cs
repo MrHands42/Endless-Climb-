@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviour
         {
             gameOverUI.SetActive(true);
         }
+        else
+        {
+            print("there is no game over ui");
+        }
         AudioManager.AudioManagerInstance.Play(SFX.EndScreen);
         Debug.Log("Game Over!");
     }

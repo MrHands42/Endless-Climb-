@@ -26,6 +26,11 @@ public class PowerUpSpawner : MonoBehaviour
     [Header("List Power Ups")]
     public PowerUpData[] powerUpList;
 
+    void Start()
+    {
+        timer = 0;
+    }
+    
     void Update()
     {
         timer += Time.deltaTime;

@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     {
         AudioManager.AudioManagerInstance.Play(SFX.PlayButton);
         SceneManager.LoadScene("SampleScene");
+        ScoreManager.instance.ResetScore();
     }
 
     public void QuitGame()

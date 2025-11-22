@@ -20,7 +20,6 @@ public class ButtonManager : MonoBehaviour
         }
         else
         {
-            print("WTF DUDE");
             Destroy(gameObject);
         }
 
@@ -55,6 +54,10 @@ public class ButtonManager : MonoBehaviour
         {
             pauseMenuUI.SetActive(true);
         }
+        else
+        {
+            print("I DONT SEE SHIT");
+        }
         Cursor.visible = true;
     }
 
@@ -66,6 +69,10 @@ public class ButtonManager : MonoBehaviour
         {
             pauseMenuUI.SetActive(false);
         }
+        else
+        {
+            print("I DONT SEE SHIT");
+        }
     }
 
     public void Restart()
@@ -75,6 +82,7 @@ public class ButtonManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         pauseMenuUI.SetActive(false);
         gameOverUI.SetActive(false);
+        ScoreManager.instance.ResetScore();
     }
 
     public void BackToMenu()
@@ -84,5 +92,6 @@ public class ButtonManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
         pauseMenuUI.SetActive(false);
         gameOverUI.SetActive(false);
+        ScoreManager.instance.ResetScore();
     }
 }
