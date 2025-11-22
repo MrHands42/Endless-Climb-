@@ -62,7 +62,10 @@ public class ObstacleSpawner : MonoBehaviour
     private GameObject warningClone;
 
     [Header("Spawn Rate")]
-    public float spawnTime = 2;
+    public float spawnTime = 10;
+    public float slowSpawn = 4f;
+    public float fastSpawn = 0.5f;
+    public float speedUpDuration = 60f;
     private float timer = 0;
 
     private float debugTimer = 0;
@@ -83,6 +86,9 @@ public class ObstacleSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float t = Mathf.Clamp01(Time.timeSinceLevelLoad / speedUpDuration);
+        spawnTime = Mathf.Lerp(slowSpawn, fastSpawn, t);
+        print(spawnTime);
         ZeusCooldown();
         MonkeyCooldown();
         if (timer < spawnTime)

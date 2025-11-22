@@ -106,7 +106,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (pointText != null)
         {
-            pointText.text = point.ToString() + " POINTS";
+            pointText.text = point.ToString();
         }
         if (highScoreText != null)
         {
