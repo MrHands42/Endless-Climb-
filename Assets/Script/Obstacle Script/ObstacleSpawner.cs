@@ -88,7 +88,6 @@ public class ObstacleSpawner : MonoBehaviour
         if (timer < spawnTime)
         {
             // debugTimer += Time.deltaTime;
-            Debug.Log("Timer: " + debugTimer);
             timer += Time.deltaTime;
         }
         else
@@ -248,7 +247,7 @@ public class ObstacleSpawner : MonoBehaviour
         for (int i = 1; i < 3; i++)
         {
             Debug.Log("Strike Made");
-            GameObject strikeInstance = Instantiate(strike,strikeDict[i] - new Vector3(0,2.5f,0),transform.rotation);
+            GameObject strikeInstance = Instantiate(strike,strikeDict[i] - new Vector3(0,distance_box,0),transform.rotation);
         }
 
     }

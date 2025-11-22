@@ -5,5 +5,19 @@ using UnityEngine;
 
 public class RockObstacle : FallingObstacle
 {
-    //bleh
+    void Start()
+    {
+        AudioManager.AudioManagerInstance.Play(SFX.Rock);
+    }
+
+    void Update()
+    {
+        transform.position += (Vector3.down * speed) * Time.deltaTime;
+
+        if (transform.position.y < death)
+        {
+            Debug.Log("Destroyed Rock");
+            Destroy(gameObject);
+        }
+    }
 }

@@ -20,9 +20,13 @@ public class Warning : MonoBehaviour
     private float timer = 0;
     public SpriteRenderer sprite;
 
+    private bool checkStrike = false ; //ini karena lightning ke buat 6 kali omg bruh
+
     // Start is called before the first frame update
     void Start()
     {
+
+        AudioManager.AudioManagerInstance.Play(SFX.Warning);
         WarningGoneNormal.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateObstacle);
         WarningGoneBanana.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateBanana);
         WarningGoneMonkey.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().CreateMonkey);
@@ -78,6 +82,7 @@ public class Warning : MonoBehaviour
             else if (type == "strike")
             {
                 WarningGoneStrike.Invoke();
+                checkStrike = true;
             }
             Debug.Log("Warning Destroyed");
             Destroy(gameObject); 

@@ -21,7 +21,7 @@ public class FallingObstacle : MonoBehaviour
 
         if (transform.position.y < death)
         {
-            Debug.Log("Destroyed " + gameObject.name);
+            Debug.Log("Destroyed Falling obstacle");
             Destroy(gameObject);
         }
     }
@@ -35,6 +35,7 @@ public class HorizontalObstacle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.Bird);
         if (transform.position.x < 0) // spawn left arah kanan
         {
             Obsdirection = 0;
@@ -43,7 +44,6 @@ public class HorizontalObstacle : MonoBehaviour
         {
             Obsdirection = 1;
         }
-        Debug.Log(Obsdirection + " is my dir");
     }
 
     // Update is called once per frame
@@ -54,7 +54,7 @@ public class HorizontalObstacle : MonoBehaviour
             transform.position += (Vector3.right * speed) * Time.deltaTime;
             if (transform.position.x > death)
             {
-                Debug.Log("Destroyed " + gameObject.name);
+                Debug.Log("Destroyed Bird");
                 Destroy(gameObject);
             }
         }
@@ -63,7 +63,7 @@ public class HorizontalObstacle : MonoBehaviour
             transform.position += (Vector3.left * speed) * Time.deltaTime;
             if (transform.position.x < -death)
             {
-                Debug.Log("Destroyed " + gameObject.name);
+                Debug.Log("Destroyed Bird");
                 Destroy(gameObject);
             }
         }
@@ -82,7 +82,7 @@ public class VectorObstacle : MonoBehaviour
 
     void Start()
     {
-
+        AudioManager.AudioManagerInstance.Play(SFX.Banana);
     }
 
     void Update()
@@ -91,7 +91,7 @@ public class VectorObstacle : MonoBehaviour
 
         if (transform.position.y < death)
         {
-            Debug.Log("Destroyed " + gameObject.name);
+            Debug.Log("Destroyed Banana");
             Destroy(gameObject);
         }
     }
@@ -110,6 +110,7 @@ public class MonkeyObstacle : MonoBehaviour
 
     public void Start()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.Monkey);
         throwCount = 2;
         ThrowBanana.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().BananaSignal);
     }
@@ -122,7 +123,7 @@ public class MonkeyObstacle : MonoBehaviour
         }
         else
         {
-            Debug.Log("Destroyed" + gameObject.name);
+            Debug.Log("Destroyed Monkey");
             Destroy(gameObject);
         }
         
@@ -133,6 +134,7 @@ public class MonkeyObstacle : MonoBehaviour
         else
         {
             ThrowBanana.Invoke();
+            AudioManager.AudioManagerInstance.Play(SFX.Banana);
             throwCount = 0;
         }
     }
@@ -146,6 +148,7 @@ public class ZeusObstacle : MonoBehaviour
 
     public void Start()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.Zeus);
         zeusStrike.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().LightningSignal);
     }
 
@@ -158,7 +161,7 @@ public class ZeusObstacle : MonoBehaviour
         else
         {
             zeusStrike.Invoke();
-            Debug.Log("Destroyed" + gameObject.name);
+            Debug.Log("Destroyed Zeus");
             Destroy(gameObject);
         }
     }
@@ -171,7 +174,7 @@ public class LightningObstacle : MonoBehaviour
 
     public void Start()
     {
-       
+       AudioManager.AudioManagerInstance.Play(SFX.Lightning);
     }
 
     public void Update()
@@ -182,7 +185,7 @@ public class LightningObstacle : MonoBehaviour
         }
         else
         {
-            Debug.Log("Destroyed" + gameObject.name);
+            Debug.Log("Destroyed Lightning");
             Destroy(gameObject);
         }
     }
