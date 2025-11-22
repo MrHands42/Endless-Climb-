@@ -1719,9 +1719,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1236121297}
-  - component: {fileID: 1236121299}
-  - component: {fileID: 1236121298}
+  - component: {fileID: 1490343238}
+  - component: {fileID: 1490343237}
+  - component: {fileID: 1490343236}
+  - component: {fileID: 1490343235}
+  - component: {fileID: 1490343239}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -2461,6 +2463,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -106}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1490343239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490343233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e06bab0fb307614c877db8eb3027ba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointText: {fileID: 2114297913}
+  highScoreText: {fileID: 1517152271}
 --- !u!114 &1670845017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2927,7 +2943,7 @@ GameObject:
   - component: {fileID: 2007887795}
   - component: {fileID: 2007887794}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
