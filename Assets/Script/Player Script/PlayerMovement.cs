@@ -22,10 +22,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDashing)
         {
-            // Set direction animation on key press (starts immediately, persists during dash)
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                animator.SetInteger("Direction", 1); // Up - animation starts here and stays until dash ends
+                animator.SetInteger("Direction", 1); // Up 
                 StartDash(0f, MoveDistance);
             }
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
@@ -58,7 +57,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // If dash is invalid (out of 3x3 grid bounds), reset to idle immediately
             animator.SetInteger("Direction", 0);
         }
     }
@@ -67,13 +65,11 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = true;
 
-        // Optional: Trigger a separate "Dash" animation if you have one (e.g., for effects during dash)
         if (animator != null)
         {
             animator.SetTrigger("Dash");
         }
 
-        // Get start position
         Vector3 startPos = transform.position;
         Vector3 targetPos = new Vector3(targetX, targetY, 0f);
 
@@ -93,7 +89,6 @@ public class PlayerMovement : MonoBehaviour
 
         isDashing = false;
 
-        // Reset to idle ONLY after the dash is fully over
         animator.SetInteger("Direction", 0);
 
         if (ScoreManager.instance != null && deltaY > 0)
