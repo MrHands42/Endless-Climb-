@@ -35,14 +35,18 @@ public class ButtonManager : MonoBehaviour
 
     public void TogglePause()
     {
-        isPaused = !isPaused;
-        if (isPaused)
+        if (!gameOverUI.activeSelf)
         {
-            PauseGame();
-        }
-        else
-        {
-            ResumeGame();
+            isPaused = !isPaused;
+            if (isPaused)
+            {
+                PauseGame();
+
+            }
+            else
+            {
+                ResumeGame();
+            }
         }
     }
 
