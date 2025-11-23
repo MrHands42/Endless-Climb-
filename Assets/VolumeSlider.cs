@@ -55,12 +55,12 @@ public class VolumeSettings : MonoBehaviour
 
     public void SetMasterVolume(float volume)
     {
-        volume = Mathf.Clamp(volume, 0.0001f, 1f);  // Prevent -inf
+        volume = Mathf.Clamp(volume, 0.0001f, 1f);
         if (myMixer != null)
         {
             myMixer.SetFloat("Master", Mathf.Log10(volume) * 20);
             PlayerPrefs.SetFloat("masterVolume", volume);
-            Debug.Log("Master Volume set to: " + volume);  // For debugging
+            Debug.Log("Master Volume set to: " + volume);
         }
     }
 

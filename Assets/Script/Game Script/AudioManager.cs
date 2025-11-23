@@ -33,13 +33,13 @@ public class AudioManager : MonoBehaviour
     public static AudioManager AudioManagerInstance;
 
     [Header("AUDIO SOURCES")]
-    public AudioSource bgmSource;  // Dedicated source for BGM
-    public AudioSource sfxSource;  // Dedicated source for SFX
+    public AudioSource bgmSource; 
+    public AudioSource sfxSource;  
 
     [Header("AUDIO MIXER")]
-    public AudioMixer audioMixer;  // Reference to the AudioMixer asset
-    public AudioMixerGroup bgmMixerGroup;  // Mixer group for BGM
-    public AudioMixerGroup sfxMixerGroup;  // Mixer group for SFX
+    public AudioMixer audioMixer; 
+    public AudioMixerGroup bgmMixerGroup; 
+    public AudioMixerGroup sfxMixerGroup;  
 
     [Header("BGM")]
     public AudioClip BGM;
@@ -71,7 +71,6 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        // Assign mixer groups to sources
         if (bgmSource != null && bgmMixerGroup != null)
         {
             bgmSource.outputAudioMixerGroup = bgmMixerGroup;
@@ -138,12 +137,12 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // Optional: Methods to control mixer volumes (e.g., via sliders or code)
+
     public void SetBGMVolume(float volume)
     {
         if (audioMixer != null)
         {
-            audioMixer.SetFloat("BGMVolume", Mathf.Log10(volume) * 20);  // Assuming "BGMVolume" is an exposed parameter in the mixer
+            audioMixer.SetFloat("BGMVolume", Mathf.Log10(volume) * 20); 
         }
     }
 
@@ -151,7 +150,7 @@ public class AudioManager : MonoBehaviour
     {
         if (audioMixer != null)
         {
-            audioMixer.SetFloat("SFXVolume", Mathf.Log10(volume) * 20);  // Assuming "SFXVolume" is an exposed parameter in the mixer
+            audioMixer.SetFloat("SFXVolume", Mathf.Log10(volume) * 20);  
         }
     }
 }
