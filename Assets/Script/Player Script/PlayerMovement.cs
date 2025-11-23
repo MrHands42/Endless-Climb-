@@ -27,32 +27,39 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError("ERROR PARAH: Tidak ada Animator di Player ataupun Anak-anaknya!");
         }
+        else
+        {
+            Debug.Log("Animator found and assigned successfully.");
+            animator.enabled = true; // Ensure it's enabled
+        }
     }
-
 
     void Update()
     {
         if (!isDashing)
         {
-            // Set direction animation on key press (starts immediately, persists during dash)
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                animator.SetInteger("Direction", 1); // Up - animation starts here and stays until dash ends
+                Debug.Log("Key W pressed: Setting Direction to 1 (Up)");
+                if (animator != null) animator.SetInteger("Direction", 1); // Up 
                 StartDash(0f, MoveDistance);
             }
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                animator.SetInteger("Direction", 2); // Down
+                Debug.Log("Key S pressed: Setting Direction to 2 (Down)");
+                if (animator != null) animator.SetInteger("Direction", 2); // Down
                 StartDash(0f, -MoveDistance);
             }
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                animator.SetInteger("Direction", 3); // Left
+                Debug.Log("Key A pressed: Setting Direction to 3 (Left)");
+                if (animator != null) animator.SetInteger("Direction", 3); // Left
                 StartDash(-MoveDistance, 0f);
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                animator.SetInteger("Direction", 4); // Right
+                Debug.Log("Key D pressed: Setting Direction to 4 (Right)");
+                if (animator != null) animator.SetInteger("Direction", 4); // Right
                 StartDash(MoveDistance, 0f);
             }
         }
@@ -62,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float newX = currentX + deltaX;
         float newY = currentY + deltaY;
-
+        //Damn ngapain bacain komen
         if (newX >= GridMin && newX <= GridMax && newY >= GridMin && newY <= GridMax)
         {
             StartCoroutine(DashCoroutine(newX, newY, deltaY));
@@ -70,22 +77,21 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // If dash is invalid (out of 3x3 grid bounds), reset to idle immediately
-            animator.SetInteger("Direction", 0);
+            Debug.Log("Dash invalid: Resetting to idle (Direction = 0)");
+            if (animator != null) animator.SetInteger("Direction", 0);
         }
     }
 
     private System.Collections.IEnumerator DashCoroutine(float targetX, float targetY, float deltaY)
     {
         isDashing = true;
+        Debug.Log("Dash started. Direction should be animating now.");
 
-        // Optional: Trigger a separate "Dash" animation if you have one (e.g., for effects during dash)
         if (animator != null)
         {
-            animator.SetTrigger("Dash");
+            animator.SetTrigger("Dash"); //Ngerti lahh
         }
 
-        // Get start position
         Vector3 startPos = transform.position;
         Vector3 targetPos = new Vector3(targetX, targetY, 0f);
 
@@ -105,8 +111,8 @@ public class PlayerMovement : MonoBehaviour
 
         isDashing = false;
 
-        // Reset to idle ONLY after the dash is fully over
-        animator.SetInteger("Direction", 0);
+        Debug.Log("Dash ended: Resetting to idle (Direction = 0)");
+        if (animator != null) animator.SetInteger("Direction", 0);
 
         if (ScoreManager.instance != null && deltaY > 0)
         {

@@ -16,6 +16,9 @@ public class SlipMechanic : MonoBehaviour
     private Vector3 posisiTerakhir;
     private Vector3 posisiAsliBody;
 
+
+    public Animator animator;
+    // gw benci banget ama lu animator
     void Start()
     {
         mulaiGetarDetik = batasWaktuDiam * (2f / 3f);
@@ -72,6 +75,9 @@ public class SlipMechanic : MonoBehaviour
         ResetPosisiBody();
         Debug.Log("Player Jatuh!");
 
+    
+        if (animator != null) animator.SetInteger("Direction", 7);
+        //solusi nya taik banget dawg
         if (GetComponent<PlayerMovement>() != null)
             GetComponent<PlayerMovement>().enabled = false;
 
