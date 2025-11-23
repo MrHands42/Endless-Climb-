@@ -3578,63 +3578,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4725874157545432156, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
   m_PrefabInstance: {fileID: 842332741245927404}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1382878091
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1769930759865772672, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.053917527
-      objectReference: {fileID: 0}
-    - target: {fileID: 1769930759865772672, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.223197
-      objectReference: {fileID: 0}
-    - target: {fileID: 1769930759865772672, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1769930759865772672, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1769930759865772672, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1769930759865772672, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1769930759865772672, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1769930759865772672, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1769930759865772672, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1769930759865772672, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9111343341070977449, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
-      propertyPath: m_Name
-      value: Invincible
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b91fb15f85562b2499ebb42040e829be, type: 3}
 --- !u!1 &1498402297
 GameObject:
   m_ObjectHideFlags: 0
@@ -5954,4 +5897,3 @@ SceneRoots:
   - {fileID: 1124328816}
   - {fileID: 268507138}
   - {fileID: 817580100}
-  - {fileID: 1382878091}
