@@ -11,12 +11,24 @@ public class PlayerMovement : MonoBehaviour
     private const float DashDuration = 0.2f;
     private bool isDashing = false;
 
-    private Animator animator;
+    [Header("Visuals")]
+    public Animator animator;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        // Jika kamu lupa drag-drop di Inspector, script akan mencarinya sendiri
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+
+        // Cek terakhir: Kalau masih gak ketemu juga, baru error
+        if (animator == null)
+        {
+            Debug.LogError("ERROR PARAH: Tidak ada Animator di Player ataupun Anak-anaknya!");
+        }
     }
+
 
     void Update()
     {
