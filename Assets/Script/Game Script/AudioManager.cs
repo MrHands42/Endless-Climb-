@@ -24,7 +24,8 @@ public enum SFX
     TimeSlow,
     Impact,
     Invincibility,
-    Shield
+    Shield,
+    ShieldBreak
 }
 
 public class AudioManager : MonoBehaviour
@@ -61,6 +62,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip endScreen;
     public AudioClip generalButton;
     public AudioClip playButton;
+    public AudioClip shieldBreak;
 
     void Awake()
     {
@@ -107,6 +109,7 @@ public class AudioManager : MonoBehaviour
             case SFX.Impact: clip = impacts; break;
             case SFX.Invincibility: clip = invincibility; break;
             case SFX.Shield: clip = shield; break;
+            case SFX.ShieldBreak: clip = shieldBreak; break;
 
 
 
