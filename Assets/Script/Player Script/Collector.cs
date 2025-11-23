@@ -36,16 +36,15 @@ public class Collector : MonoBehaviour
                 return;
             }
 
-            if (GameManager.Instance != null)
+            SlipMechanic mechanic = GetComponent<SlipMechanic>();
+            if (mechanic != null)
             {
-                GameManager.Instance.GameOver();
-                Debug.Log("Game Over triggered!");
+                mechanic.RopeSlip();
             }
-
             else
             {
-                Time.timeScale = 0f;
-                Debug.LogError("GameManager gaada cik");
+                Debug.LogError("JALUR B: Gawat! Script SlipMechanic TIDAK DITEMUKAN di Player! (Langsung Freeze)");
+                if (GameManager.Instance != null) GameManager.Instance.GameOver();
             }
         }
 
@@ -97,7 +96,7 @@ public class Collector : MonoBehaviour
 
             // Maxwell jadi putih
             Color c = invincibilityRenderer.color;
-            c.a = 1f;
+            c.a = 0.5f;
             invincibilityRenderer.color = c;
         }
 
@@ -112,7 +111,7 @@ public class Collector : MonoBehaviour
             if (invincibilityRenderer != null)
             {
                 float progress = timer / duration;
-                float newAlpha = Mathf.Lerp(1f, 0f, progress);
+                float newAlpha = Mathf.Lerp(0.5f, 0f, progress);
 
                 Color c = invincibilityRenderer.color;
                 c.a = newAlpha;

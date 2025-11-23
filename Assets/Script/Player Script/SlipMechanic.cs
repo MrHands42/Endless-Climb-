@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SlipMechanic : MonoBehaviour
@@ -10,64 +9,45 @@ public class SlipMechanic : MonoBehaviour
 
     [Header("Vibration Settings")]
     public Transform playerBodyVisual;
-    
-    public float kekuatanGetar = 0.5f;
+    public float kekuatanGetar = 0.05f;
+    private float mulaiGetarDetik;
     private float timerDiam = 0f;
     private bool isDead = false;
     private Vector3 posisiTerakhir;
     private Vector3 posisiAsliBody;
-    public float mulaiGetarDetik;
 
     void Start()
     {
-        if (mulaiGetarDetik == 0)
-        {
-            mulaiGetarDetik = batasWaktuDiam * (2f / 3f);
-        }
-
-
+        mulaiGetarDetik = batasWaktuDiam * (2f / 3f);
         posisiTerakhir = transform.position;
 
         if (playerBodyVisual != null)
-        {
             posisiAsliBody = playerBodyVisual.localPosition;
-        }
     }
 
     void Update()
     {
         if (isDead) return;
+
         float jarakGerak = Vector3.Distance(transform.position, posisiTerakhir);
 
         if (jarakGerak <= toleransiGerak)
         {
-            // Kondisi diam
             timerDiam += Time.deltaTime;
 
-            if (timerDiam > mulaiGetarDetik)
-            {
-                GetarkanPlayer();
-            }
-
-            // RopeSlip jika melewati batas waktu diam
-            if (timerDiam >= batasWaktuDiam)
-            {
-                RopeSlip();
-            }
+            if (timerDiam > mulaiGetarDetik) GetarkanBody();
+            if (timerDiam >= batasWaktuDiam) RopeSlip();
         }
         else
         {
-            // Kondisi bergerak
             timerDiam = 0f;
-            ResetPosisiPlayer();
+            ResetPosisiBody();
         }
 
         posisiTerakhir = transform.position;
-
-        if (Input.GetKeyDown(KeyCode.Space)) RopeSlip();
     }
 
-    void GetarkanPlayer()
+    void GetarkanBody()
     {
         if (playerBodyVisual != null)
         {
@@ -77,21 +57,48 @@ public class SlipMechanic : MonoBehaviour
         }
     }
 
-    void ResetPosisiPlayer()
+    void ResetPosisiBody()
     {
-        if (playerBodyVisual != null)
-        {
-            playerBodyVisual.localPosition = posisiAsliBody;
-        }
+        if (playerBodyVisual != null) playerBodyVisual.localPosition = posisiAsliBody;
     }
 
     public void RopeSlip()
     {
+        Collector collector = GetComponent<Collector>();
+
         if (isDead) return;
         isDead = true;
 
-        ResetPosisiPlayer();
-        Debug.Log("Mati: Rope Slip");
+        ResetPosisiBody();
+        Debug.Log("Player Jatuh!");
+
+        if (GetComponent<PlayerMovement>() != null)
+            GetComponent<PlayerMovement>().enabled = false;
+
+        if (GetComponent<Collider2D>() != null)
+            GetComponent<Collider2D>().enabled = false;
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic; 
+            rb.gravityScale = 4f; 
+            rb.velocity = Vector2.zero; 
+
+            rb.AddForce(Vector2.up * 12f, ForceMode2D.Impulse);
+        }
+
+        if (AudioManager.AudioManagerInstance != null)
+        {
+            AudioManager.AudioManagerInstance.Play(SFX.Impact);
+        }
+
+        StartCoroutine(WaitAndShowGameOver());
+    }
+
+    IEnumerator WaitAndShowGameOver()
+    {
+        yield return new WaitForSeconds(1.5f);
 
         if (GameManager.Instance != null)
             GameManager.Instance.GameOver();
