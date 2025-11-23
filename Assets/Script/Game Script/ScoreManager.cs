@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
 
     public Text pointText;
     public Text highScoreText;
+    public Text GameOverScore;
     
     private int point = 0;  // Skor akhir (baseScore * timer)
     private int highScore = 0;
@@ -108,6 +109,7 @@ public class ScoreManager : MonoBehaviour
         if (pointText != null)
         {
             pointText.text = point.ToString();
+            GameOverScore.text = point.ToString();
         }
         if (highScoreText != null)
         {
