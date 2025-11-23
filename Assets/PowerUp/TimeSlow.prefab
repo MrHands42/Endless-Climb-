@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1769930759865772672}
   - component: {fileID: 8909711786881031222}
   - component: {fileID: -9136993150380717326}
-  - component: {fileID: 2874339136785037329}
   - component: {fileID: -3121945379900445991}
   m_Layer: 0
   m_Name: TimeSlow
@@ -132,18 +131,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2874339136785037329
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9111343341070977449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edb5de9ff51ff1342a1d2ae735b67d26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-3121945379900445991
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -97,7 +97,7 @@ public class Collector : MonoBehaviour
             invincibilityRenderer.color = c;
         }
 
-        Debug.Log("Mode Dewa Aktif!");
+        Debug.Log("Invincibility Aktif!");
 
         // Fading out Maxwell
         float timer = 0f;
