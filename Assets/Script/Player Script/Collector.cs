@@ -79,9 +79,13 @@ public class Collector : MonoBehaviour
     {
         hasShield = false;
         if (shieldVisual != null) shieldVisual.SetActive(false);
-        // sfx shield pecahhhh
-    }
 
+
+        if (AudioManager.AudioManagerInstance != null)
+        {
+            AudioManager.AudioManagerInstance.Play(SFX.ShieldBreak);
+        }
+    }
 
     IEnumerator InvincibilityRoutine(float duration)
     {
@@ -97,7 +101,7 @@ public class Collector : MonoBehaviour
             invincibilityRenderer.color = c;
         }
 
-        Debug.Log("Mode Dewa Aktif!");
+        Debug.Log("Invincibility Aktif!");
 
         // Fading out Maxwell
         float timer = 0f;
