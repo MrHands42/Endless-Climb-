@@ -56,8 +56,8 @@ public class ScoreManager : MonoBehaviour
         }
         
         // Update skor akhir (baseScore * timer) secara real-time
-        // Catatan: BaseScore dihitung ulang berdasarkan totalVerticalDistance
-        int baseScore = Mathf.FloorToInt(totalVerticalDistance * baseMultiplier);
+        // Modifikasi: Tambahkan 1 agar baseScore minimal 1, sehingga score mulai otomatis dari awal
+        int baseScore = 1 + Mathf.FloorToInt(totalVerticalDistance * baseMultiplier);  // "1" untuk mulai otomatis
         point = Mathf.FloorToInt(baseScore * timer);
         
         // Periksa dan update high score
@@ -113,7 +113,7 @@ public class ScoreManager : MonoBehaviour
         }
         if (highScoreText != null)
         {
-            highScoreText.text = "HIGHSCORE: " + highScore.ToString();
+            highScoreText.text = "HIGHSCRE: " + highScore.ToString();
         }
     }
 }
