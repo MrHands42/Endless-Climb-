@@ -20,7 +20,6 @@ public class ScoreManager : MonoBehaviour
     private float totalVerticalDistance = 0f;  // Total jarak vertikal ke atas yang ditempuh
     private const float DistanceThreshold = 1000f;  // Ambang batas jarak untuk mulai scaling (misalnya 1000 meter/unit)
     private const float ScalingIncreasePerSecond = 0.01f;  // Kenaikan multiplier per detik setelah threshold
-    private bool isScalingActive = false;  // Flag apakah scaling sudah aktif
 
     void Awake()
     {
@@ -50,10 +49,9 @@ public class ScoreManager : MonoBehaviour
         // Jalankan timer terus
         timer += Time.deltaTime;
         
-        // Jika total jarak > threshold, aktifkan scaling dan naikkan multiplier
+        // Jika total jarak > threshold, naikkan multiplier (scaling aktif tanpa flag)
         if (totalVerticalDistance >= DistanceThreshold)
         {
-            isScalingActive = true;
             baseMultiplier += ScalingIncreasePerSecond * Time.deltaTime;  // Naik 0.01 per detik
         }
         
@@ -99,7 +97,6 @@ public class ScoreManager : MonoBehaviour
         timer = 0f;
         totalVerticalDistance = 0f;
         baseMultiplier = 10f;  // Reset ke default
-        isScalingActive = false;
         UpdateUI();
     }
 
@@ -109,6 +106,9 @@ public class ScoreManager : MonoBehaviour
         if (pointText != null)
         {
             pointText.text = point.ToString();
+        }
+        if (GameOverScore != null)  // Pisahkan if untuk GameOverScore agar lebih aman
+        {
             GameOverScore.text = point.ToString();
         }
         if (highScoreText != null)

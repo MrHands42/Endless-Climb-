@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ScoreManagerMenu : MonoBehaviour
 {
-    public static ScoreManagerMenu instance;
+    public static ScoreManagerMenu instance;  
 
     public Text pointText;
     public Text highScoreText;
@@ -20,13 +20,12 @@ public class ScoreManagerMenu : MonoBehaviour
     private float totalVerticalDistance = 0f;  // Total jarak vertikal ke atas yang ditempuh
     private const float DistanceThreshold = 1000f;  // Ambang batas jarak untuk mulai scaling (misalnya 1000 meter/unit)
     private const float ScalingIncreasePerSecond = 0.01f;  // Kenaikan multiplier per detik setelah threshold
-    private bool isScalingActive = false;  // Flag apakah scaling sudah aktif
 
     void Awake()
     {
         if (instance == null)
         {
-            instance = this;
+            instance = this;  
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -50,10 +49,9 @@ public class ScoreManagerMenu : MonoBehaviour
         // Jalankan timer terus
         timer += Time.deltaTime;
         
-        // Jika total jarak > threshold, aktifkan scaling dan naikkan multiplier
+        // Jika total jarak > threshold, naikkan multiplier (scaling aktif tanpa flag)
         if (totalVerticalDistance >= DistanceThreshold)
         {
-            isScalingActive = true;
             baseMultiplier += ScalingIncreasePerSecond * Time.deltaTime;  // Naik 0.01 per detik
         }
         
@@ -99,7 +97,6 @@ public class ScoreManagerMenu : MonoBehaviour
         timer = 0f;
         totalVerticalDistance = 0f;
         baseMultiplier = 10f;  // Reset ke default
-        isScalingActive = false;
         UpdateUI();
     }
 
