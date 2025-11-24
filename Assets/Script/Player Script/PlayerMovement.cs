@@ -114,9 +114,5 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Dash ended: Resetting to idle (Direction = 0)");
         if (animator != null) animator.SetInteger("Direction", 0);
 
-        if (ScoreManager.instance != null && deltaY > 0)
-        {
-            ScoreManager.instance.AddVerticalScore(deltaY);
-        }
     }
 }

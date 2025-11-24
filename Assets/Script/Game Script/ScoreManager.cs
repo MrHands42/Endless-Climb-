@@ -14,12 +14,10 @@ public class ScoreManager : MonoBehaviour
     private int point = 0;  // Skor akhir (baseScore * timer)
     private int highScore = 0;
     
-    // Variabel untuk skor default dan scaling
-    private float baseMultiplier = 10f;  // Default multiplier untuk skor dasar (sesuaikan jika perlu)
-    private float timer = 0f;  // Timer global (waktu bertahan)
-    private float totalVerticalDistance = 0f;  // Total jarak vertikal ke atas yang ditempuh
-    private const float DistanceThreshold = 1000f;  // Ambang batas jarak untuk mulai scaling (misalnya 1000 meter/unit)
-    private const float ScalingIncreasePerSecond = 0.01f;  // Kenaikan multiplier per detik setelah threshold
+    // Variabel untuk skor default
+    private int baseScore = 1;  // Skor dasar tetap (sesuaikan jika perlu)
+    private int timer = 0;  // Timer dalam detik penuh (integer)
+    private float elapsedTime = 0f;  // Untuk tracking waktu delta
 
     void Awake()
     {
@@ -46,40 +44,28 @@ public class ScoreManager : MonoBehaviour
 
     void Update()
     {
-        // Jalankan timer terus
-        timer += Time.deltaTime;
+        // Increment elapsedTime dengan deltaTime
+        elapsedTime += Time.deltaTime;
         
-        // Jika total jarak > threshold, naikkan multiplier (scaling aktif tanpa flag)
-        if (totalVerticalDistance >= DistanceThreshold)
+        // Jika sudah 1 detik penuh, increment timer dan reset elapsedTime
+        if (elapsedTime >= 1f)
         {
-            baseMultiplier += ScalingIncreasePerSecond * Time.deltaTime;  // Naik 0.01 per detik
-        }
-        
-        // Update skor akhir (baseScore * timer) secara real-time
-        // Modifikasi: Tambahkan 1 agar baseScore minimal 1, sehingga score mulai otomatis dari awal
-        int baseScore = 1 + Mathf.FloorToInt(totalVerticalDistance * baseMultiplier);  // "1" untuk mulai otomatis
-        point = Mathf.FloorToInt(baseScore * timer);
-        
-        // Periksa dan update high score
-        if (point > highScore)
-        {
-            highScore = point;
-            PlayerPrefs.SetInt("HighScore", highScore);
-            PlayerPrefs.Save();
-        }
-        
-        // Update UI
-        UpdateUI();
-    }
-
-    // Method untuk menambah skor berdasarkan jarak vertikal ke atas
-    // Dipanggil dari PlayerMovement saat dash ke atas selesai
-    public void AddVerticalScore(float deltaY)
-    {
-        if (deltaY > 0)
-        {
-            totalVerticalDistance += deltaY;  // Tambah total jarak vertikal
-            // Skor akhir akan dihitung ulang di Update() berdasarkan baseMultiplier dan timer
+            timer += 1;  // Tambah 1 detik
+            elapsedTime = 0f;  // Reset
+            
+            // Hitung skor akhir (baseScore * timer) setiap detik
+            point = baseScore * timer;
+            
+            // Periksa dan update high score
+            if (point > highScore)
+            {
+                highScore = point;
+                PlayerPrefs.SetInt("HighScore", highScore);
+                PlayerPrefs.Save();
+            }
+            
+            // Update UI setiap detik
+            UpdateUI();
         }
     }
 
@@ -94,9 +80,8 @@ public class ScoreManager : MonoBehaviour
     public void ResetScore()
     {
         point = 0;
-        timer = 0f;
-        totalVerticalDistance = 0f;
-        baseMultiplier = 10f;  // Reset ke default
+        timer = 0;
+        elapsedTime = 0f;
         UpdateUI();
     }
 
@@ -113,7 +98,7 @@ public class ScoreManager : MonoBehaviour
         }
         if (highScoreText != null)
         {
-            highScoreText.text = "HIGHSCRE: " + highScore.ToString();
+            highScoreText.text = "HIGHSCORE: " + highScore.ToString();
         }
     }
 }
