@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     private const float DashDuration = 0.2f;
     private bool isDashing = false;
 
+    private bool facingLeft = false; // Tracks if currently facing left
+
     [Header("Visuals")]
     public Animator animator;
 
@@ -53,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 Debug.Log("Key A pressed: Setting Direction to 3 (Left)");
-                if (animator != null) animator.SetInteger("Direction", 3); // Left
+                if (animator != null) animator.SetInteger("Direction", 3);
                 StartDash(-MoveDistance, 0f);
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
@@ -65,14 +67,33 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void Flip()
+    {
+        facingLeft = true;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.flipX = true;
+        }
+    }
+
+    private void Unflip()
+    {
+        facingLeft = false;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.flipX = false;
+        }
+    }
+
     private void StartDash(float deltaX, float deltaY)
     {
         float newX = currentX + deltaX;
         float newY = currentY + deltaY;
-        //Damn ngapain bacain komen
         if (newX >= GridMin && newX <= GridMax && newY >= GridMin && newY <= GridMax)
         {
-            StartCoroutine(DashCoroutine(newX, newY, deltaY));
+            StartCoroutine(DashCoroutine(newX, newY, deltaX, deltaY));
             AudioManager.AudioManagerInstance.Play(SFX.ChangeGrid);
         }
         else
@@ -82,14 +103,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator DashCoroutine(float targetX, float targetY, float deltaY)
+    private System.Collections.IEnumerator DashCoroutine(float targetX, float targetY, float deltaX, float deltaY)
     {
         isDashing = true;
         Debug.Log("Dash started. Direction should be animating now.");
 
         if (animator != null)
         {
-            animator.SetTrigger("Dash"); //Ngerti lahh
+            animator.SetTrigger("Dash");
         }
 
         Vector3 startPos = transform.position;
@@ -113,6 +134,16 @@ public class PlayerMovement : MonoBehaviour
 
         Debug.Log("Dash ended: Resetting to idle (Direction = 0)");
         if (animator != null) animator.SetInteger("Direction", 0);
+
+
+        if (deltaX < 0)
+        {
+            Unflip();
+        }
+        else if (deltaX > 0)
+        {
+            Flip();
+        }
 
         if (ScoreManager.instance != null && deltaY > 0)
         {

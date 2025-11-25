@@ -3950,7 +3950,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2945481482066050332, guid: 3e2e8825c6cd7ae449e90a88d52b36fa, type: 3}
       propertyPath: zeusSpawn
-      value: 55
+      value: 99.8
       objectReference: {fileID: 0}
     - target: {fileID: 2945481482066050332, guid: 3e2e8825c6cd7ae449e90a88d52b36fa, type: 3}
       propertyPath: spawnScale
