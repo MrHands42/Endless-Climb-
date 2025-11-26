@@ -145,9 +145,9 @@ public class PlayerMovement : MonoBehaviour
             Flip();
         }
 
-        if (ScoreManager.instance != null && deltaY > 0)
-        {
-            ScoreManager.instance.AddVerticalScore(deltaY);
-        }
+        // if (ScoreManager.instance != null && deltaY > 0)
+        // {
+        //     ScoreManager.instance.AddVerticalScore(deltaY);
+        // }
     }
 }

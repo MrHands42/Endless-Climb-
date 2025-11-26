@@ -3094,6 +3094,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: af30258b3bcf8b34295b8c8d7c14ce50, type: 3}
     - target: {fileID: 5787587332039461203, guid: 82a27c2965f84bb4cb86b1c925d26210, type: 3}
+      propertyPath: MainMenu
+      value: 
+      objectReference: {fileID: 8300000, guid: d5de5525a0f1ba64a911a912496805d0, type: 3}
+    - target: {fileID: 5787587332039461203, guid: 82a27c2965f84bb4cb86b1c925d26210, type: 3}
       propertyPath: bgmSource
       value: 
       objectReference: {fileID: 310529215}

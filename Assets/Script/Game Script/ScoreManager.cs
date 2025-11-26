@@ -15,7 +15,7 @@ public class ScoreManager : MonoBehaviour
     private int highScore = 0;
 
     // Variabel untuk skor default dan scaling
-    private float baseMultiplier = 10f;  // Default multiplier untuk skor dasar (sesuaikan jika perlu)
+    public float baseMultiplier = 10f;  // Default multiplier untuk skor dasar (sesuaikan jika perlu)
     private float baseScore = 0f;  // BaseScore yang naik berdasarkan deltaTime dari awal
     private float totalVerticalDistance = 0f;  // Total jarak vertikal ke atas yang ditempuh
     private const float DistanceThreshold = 1000f;  // Ambang batas jarak untuk mulai scaling (misalnya 1000 meter/unit)
@@ -73,14 +73,14 @@ public class ScoreManager : MonoBehaviour
 
     // Method untuk menambah skor berdasarkan jarak vertikal ke atas
     // Dipanggil dari PlayerMovement saat dash ke atas selesai
-    public void AddVerticalScore(float deltaY)
-    {
-        if (deltaY > 0)
-        {
-            totalVerticalDistance += deltaY;  // Tambah total jarak vertikal
-            // Skor akhir akan dihitung ulang di Update() berdasarkan baseMultiplier dan timer
-        }
-    }
+    // public void AddVerticalScore(float deltaY)
+    // {
+    //     if (deltaY > 0)
+    //     {
+    //         totalVerticalDistance += deltaY;  // Tambah total jarak vertikal
+    //         // Skor akhir akan dihitung ulang di Update() berdasarkan baseMultiplier dan timer
+    //     }
+    // }
 
     // Method fallback untuk menambah skor manual (jika diperlukan)
     public void AddPoint()
@@ -95,7 +95,6 @@ public class ScoreManager : MonoBehaviour
         point = 0;
         baseScore = 0f;
         totalVerticalDistance = 0f;
-        baseMultiplier = 10f;  // Reset ke default
         UpdateUI();
     }
 

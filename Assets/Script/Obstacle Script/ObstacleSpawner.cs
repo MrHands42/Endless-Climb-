@@ -54,6 +54,7 @@ public class ObstacleSpawner : MonoBehaviour
     private Vector3 ZeusPos = new Vector3(0,0,-1);
     private Vector3 strikePos = new Vector3(0,0,-1);
     private Dictionary<int,Vector3> strikeDict = new Dictionary<int, Vector3>();
+    private bool strikeMade = false;
 
     // other shit
     private int obstacleObject = 0; // 0 = rock, 1 = goat, 2 = bird, 3 = monkey, 4 = banana
@@ -228,6 +229,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     public void CreateZeus()
     {
+        strikeMade = false;
         Debug.Log("Zues Made");
         GameObject zeusInstance = Instantiate(zeus,ZeusPos,transform.rotation);
     }
@@ -249,12 +251,15 @@ public class ObstacleSpawner : MonoBehaviour
 
     public void CreateStrike()
     {
-        for (int i = 1; i < 3; i++)
+        if (!strikeMade)
         {
-            Debug.Log("Strike Made");
-            GameObject strikeInstance = Instantiate(strike,strikeDict[i] - new Vector3(0,distance_box,0),transform.rotation);
+            for (int i = 1; i < 3; i++)
+            {
+                Debug.Log("Strike Made");
+                GameObject strikeInstance = Instantiate(strike,strikeDict[i] - new Vector3(0,distance_box,0),transform.rotation);
+            }
         }
-
+        strikeMade = true;
     }
 
     public void LightningSignal()

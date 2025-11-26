@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public enum SFX
 {
@@ -33,6 +35,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager AudioManagerInstance;
 
+    public float maxPitch;
+
     [Header("AUDIO SOURCES")]
     public AudioSource bgmSource; 
     public AudioSource sfxSource;  
@@ -44,6 +48,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("BGM")]
     public AudioClip BGM;
+    public AudioClip MainMenu;
 
     [Header("AUDIO GAMPELAY")]
     public AudioClip rockAudio;
@@ -71,8 +76,12 @@ public class AudioManager : MonoBehaviour
     public AudioClip playButton;
     public AudioClip shieldBreak;
 
+    private UnityEngine.SceneManagement.Scene currentScene;
+
     void Awake()
     {
+        currentScene = SceneManager.GetActiveScene();
+
         if (bgmSource != null && bgmMixerGroup != null)
         {
             bgmSource.outputAudioMixerGroup = bgmMixerGroup;
@@ -82,15 +91,23 @@ public class AudioManager : MonoBehaviour
             sfxSource.outputAudioMixerGroup = sfxMixerGroup;
         }
 
-        playBGM();
+        if (currentScene.buildIndex == 0)// main menu
+        {
+            playBGM(MainMenu);
+        } 
+        else if (currentScene.buildIndex == 1) // main menu
+        {
+            playBGM(BGM);
+        } 
+
         AudioManagerInstance = this;
     }
 
-    public void playBGM()
+    public void playBGM(AudioClip music)
     {
         if (bgmSource != null && BGM != null)
         {
-            bgmSource.clip = BGM;
+            bgmSource.clip = music;
             bgmSource.loop = true;
             bgmSource.Play();
         }
@@ -139,7 +156,14 @@ public class AudioManager : MonoBehaviour
 
         if (clip != null && sfxSource != null)
         {
-            sfxSource.PlayOneShot(clip);
+            AudioSource instanceSource = gameObject.AddComponent<AudioSource>();
+            instanceSource.outputAudioMixerGroup = sfxMixerGroup;
+            instanceSource.clip = clip;
+            instanceSource.pitch = Random.Range(1,maxPitch);
+
+            instanceSource.PlayOneShot(clip);
+
+            Destroy(instanceSource,clip.length / instanceSource.pitch);
         }
     }
 
