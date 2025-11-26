@@ -85,7 +85,7 @@ public class VectorObstacle : MonoBehaviour
         AudioManager.AudioManagerInstance.Play(SFX.Banana);
     }
 
-    void Update()
+    protected void Update()
     {
         transform.position += (direction * speed) * Time.deltaTime;
 

@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class BananaObstacle : VectorObstacle
 {
-    // whatever
+    protected void Update()
+    {
+        base.Update();
+        transform.Rotate(0f, 0f, 360 * Time.deltaTime);
+    }
 }

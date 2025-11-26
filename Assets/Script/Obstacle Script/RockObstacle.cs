@@ -13,6 +13,7 @@ public class RockObstacle : FallingObstacle
     void Update()
     {
         transform.position += (Vector3.down * speed) * Time.deltaTime;
+        transform.Rotate(0f, 0f, 100*speed * Time.deltaTime);
 
         if (transform.position.y < death)
         {
