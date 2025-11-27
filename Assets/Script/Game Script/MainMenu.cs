@@ -30,4 +30,9 @@ public class MainMenu : MonoBehaviour
     {
         tutorialPanel.SetActive(false);
     }
+
+    public void OpenCutscene()
+    {
+        SceneManager.LoadScene("Comic");
+    }
 }
