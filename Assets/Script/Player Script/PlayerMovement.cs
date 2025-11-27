@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -16,15 +17,29 @@ public class PlayerMovement : MonoBehaviour
     [Header("Visuals")]
     public Animator animator;
 
+    // Merged from SlipMechanic: Idle detection and fall settings
+    [Header("Slip Mechanic Settings")]
+    public float batasWaktuDiam = 7f;
+    public float toleransiGerak = 0.001f;
+
+    [Header("Vibration Settings")]
+    public Transform playerBodyVisual;
+    public float kekuatanGetar = 0.05f;
+
+    // Merged from SlipMechanic: Private variables for idle/fall logic
+    private float mulaiGetarDetik;
+    private float timerDiam = 0f;
+    private bool isDead = false;  // Retained from previous fix
+    private Vector3 posisiTerakhir;
+    private Vector3 posisiAsliBody;
+
     void Start()
     {
-        // Jika kamu lupa drag-drop di Inspector, script akan mencarinya sendiri
+        // Original PlayerMovement Start logic
         if (animator == null)
         {
             animator = GetComponentInChildren<Animator>();
         }
-
-        // Cek terakhir: Kalau masih gak ketemu juga, baru error
         if (animator == null)
         {
             Debug.LogError("ERROR PARAH: Tidak ada Animator di Player ataupun Anak-anaknya!");
@@ -32,41 +47,130 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Debug.Log("Animator found and assigned successfully.");
-            animator.enabled = true; // Ensure it's enabled
+            animator.enabled = true;
         }
+
+        // Merged from SlipMechanic Start: Initialize idle detection
+        mulaiGetarDetik = batasWaktuDiam * (2f / 3f);
+        posisiTerakhir = transform.position;
+        if (playerBodyVisual != null)
+            posisiAsliBody = playerBodyVisual.localPosition;
     }
 
+    // SINGLE Update method: Merges idle detection/vibration (from SlipMechanic) with input handling (from original PlayerMovement)
     void Update()
     {
-        if (!isDashing)
+        // Part 1: Merged from SlipMechanic Update - Handle idle detection and vibration
+        if (!isDead)
         {
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            float jarakGerak = Vector3.Distance(transform.position, posisiTerakhir);
+            if (jarakGerak <= toleransiGerak)
             {
-                Debug.Log("Key W pressed: Setting Direction to 1 (Up)");
-                if (animator != null) animator.SetInteger("Direction", 1); // Up 
-                StartDash(0f, MoveDistance);
+                timerDiam += Time.deltaTime;
+                if (timerDiam > mulaiGetarDetik) GetarkanBody();
+                if (timerDiam >= batasWaktuDiam) RopeSlip();
             }
-            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            else
             {
-                Debug.Log("Key S pressed: Setting Direction to 2 (Down)");
-                if (animator != null) animator.SetInteger("Direction", 2); // Down
-                StartDash(0f, -MoveDistance);
+                timerDiam = 0f;
+                ResetPosisiBody();
             }
-            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                Debug.Log("Key A pressed: Setting Direction to 3 (Left)");
-                if (animator != null) animator.SetInteger("Direction", 3);
-                StartDash(-MoveDistance, 0f);
-            }
-            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                Debug.Log("Key D pressed: Setting Direction to 4 (Right)");
-                if (animator != null) animator.SetInteger("Direction", 4); // Right
-                StartDash(MoveDistance, 0f);
-            }
+            posisiTerakhir = transform.position;
+        }
+
+        // Part 2: Original PlayerMovement Update logic - Handle input, with isDead check to block movement
+        if (isDead || isDashing)
+        {
+            return;  // Block input if dead or dashing
+        }
+
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Debug.Log("Key W pressed: Setting Direction to 1 (Up)");
+            if (animator != null) animator.SetInteger("Direction", 1);
+            StartDash(0f, MoveDistance);
+        }
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Debug.Log("Key S pressed: Setting Direction to 2 (Down)");
+            if (animator != null) animator.SetInteger("Direction", 2);
+            StartDash(0f, -MoveDistance);
+        }
+        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Debug.Log("Key A pressed: Setting Direction to 3 (Left)");
+            if (animator != null) animator.SetInteger("Direction", 3);
+            StartDash(-MoveDistance, 0f);
+        }
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Debug.Log("Key D pressed: Setting Direction to 4 (Right)");
+            if (animator != null) animator.SetInteger("Direction", 4);
+            StartDash(MoveDistance, 0f);
         }
     }
 
+    // Merged from SlipMechanic: Vibration methods
+    void GetarkanBody()
+    {
+        if (playerBodyVisual != null)
+        {
+            float intensity = kekuatanGetar * (timerDiam / batasWaktuDiam);
+            Vector3 randomShake = (Vector3)Random.insideUnitCircle * intensity;
+            playerBodyVisual.localPosition = posisiAsliBody + randomShake;
+        }
+    }
+
+    void ResetPosisiBody()
+    {
+        if (playerBodyVisual != null) playerBodyVisual.localPosition = posisiAsliBody;
+    }
+
+    // Merged from SlipMechanic: Fall method (kept as RopeSlip for compatibility)
+    public void RopeSlip()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        ResetPosisiBody();
+        Debug.Log("Player Jatuh!");
+
+        if (animator != null) animator.SetInteger("Direction", 7);
+
+        // Disable self (PlayerMovement) to prevent movement
+        enabled = false;
+
+        if (GetComponent<Collider2D>() != null)
+            GetComponent<Collider2D>().enabled = false;
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic; 
+            rb.gravityScale = 4f; 
+            rb.velocity = Vector2.zero;
+            rb.AddForce(Vector2.up * 12f, ForceMode2D.Impulse);
+        }
+
+        if (AudioManager.AudioManagerInstance != null)
+        {
+            AudioManager.AudioManagerInstance.Play(SFX.Impact);
+        }
+
+        StartCoroutine(WaitAndShowGameOver());
+    }
+
+    // Merged from SlipMechanic: Game over coroutine
+    IEnumerator WaitAndShowGameOver()
+    {
+        yield return new WaitForSeconds(1.5f);
+        if (GameManager.Instance != null)
+            GameManager.Instance.GameOver();
+        else
+            Time.timeScale = 0f;
+    }
+
+    // Original PlayerMovement methods (unchanged)
     private void Flip()
     {
         facingLeft = true;
@@ -134,7 +238,6 @@ public class PlayerMovement : MonoBehaviour
 
         Debug.Log("Dash ended: Resetting to idle (Direction = 0)");
         if (animator != null) animator.SetInteger("Direction", 0);
-
 
         if (deltaX < 0)
         {
