@@ -313,6 +313,7 @@ public class ObstacleSpawner : MonoBehaviour
         }
 
         strikeMade = true;
+        StartFlash();
     }
 
     public void LightningSignal()
@@ -327,8 +328,6 @@ public class ObstacleSpawner : MonoBehaviour
         strikeDict[1] = new Vector3(-distance_box + distance_box*randomNum,distance_box,-1);
         strikeDict[2] = new Vector3(-distance_box + distance_box*randomNum2,distance_box,-1);
 
-
-        StartFlash();
 
         for (int i = 0; i < 3; i++)
         {
