@@ -108,13 +108,13 @@ public class ObstacleSpawner2 : MonoBehaviour
                     {
                         obstaclePosition = BirdPos + new Vector3(-outside_box_x, -distance_box + distance_box * pos_offset,0);
                         warningPosition = obstaclePosition + new Vector3(BirdWarning_offset,0,0);
-                        flipBird = true; // Set to flip the sprite (bird spawning from left, so flip to face right)
+                        flipBird = false; // Set to flip the sprite (bird spawning from left, so flip to face right)
                     }
                     else if (dir == 1) // right
                     {
                         obstaclePosition = BirdPos + new Vector3(outside_box_x, -distance_box + distance_box * pos_offset,0);
                         warningPosition = obstaclePosition - new Vector3(BirdWarning_offset,0,0);
-                        flipBird = false; // No flip needed (bird spawning from right, faces left by default)
+                        flipBird = true; // No flip needed (bird spawning from right, faces left by default)
                     }
                     CreateWarning("bird");
                     break;
