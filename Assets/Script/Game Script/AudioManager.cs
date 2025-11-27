@@ -28,7 +28,13 @@ public enum SFX
     Impact,
     Invincibility,
     Shield,
-    ShieldBreak
+    ShieldBreak,
+
+    Floor,
+    Ambience,
+    Exclamate,
+    Whistle,
+    FallScream
 }
 
 public class AudioManager : MonoBehaviour
@@ -76,6 +82,13 @@ public class AudioManager : MonoBehaviour
     public AudioClip playButton;
     public AudioClip shieldBreak;
 
+    [Header("CUTSCENE")]
+    public AudioClip ambience;
+    public AudioClip floorcrack;
+    public AudioClip exclamation;
+    public AudioClip whistling;
+    public AudioClip scream;
+
     private UnityEngine.SceneManagement.Scene currentScene;
 
     void Awake()
@@ -91,14 +104,18 @@ public class AudioManager : MonoBehaviour
             sfxSource.outputAudioMixerGroup = sfxMixerGroup;
         }
 
-        if (currentScene.buildIndex == 0)// main menu
+        if (currentScene.name == "MainMenu")// main menu
         {
             playBGM(MainMenu);
         } 
-        else if (currentScene.buildIndex == 1) // main menu
+        else if (currentScene.name == "SampleScene") // main menu
         {
             playBGM(BGM);
         } 
+        else if (currentScene.name == "Comic")
+        {
+            playBGM(ambience);
+        }
 
         AudioManagerInstance = this;
     }
@@ -150,19 +167,26 @@ public class AudioManager : MonoBehaviour
             case SFX.Shield: clip = shield; break;
             case SFX.ShieldBreak: clip = shieldBreak; break;
 
-
-
+            case SFX.Ambience: clip = ambience; break;
+            case SFX.Floor: clip = floorcrack; break;
+            case SFX.Exclamate: clip = exclamation; break;
+            case SFX.Whistle: clip = whistling; break;
+            case SFX.FallScream: clip = scream; break;
         }
+
 
         if (clip != null && sfxSource != null)
         {
             AudioSource instanceSource = gameObject.AddComponent<AudioSource>();
             instanceSource.outputAudioMixerGroup = sfxMixerGroup;
             instanceSource.clip = clip;
-            instanceSource.pitch = Random.Range(1,maxPitch);
+            if (clip != ambience && clip != floorcrack && clip != whistling && clip != scream && clip != exclamation)
+            {
 
+                instanceSource.pitch = Random.Range(1,maxPitch);
+
+            }
             instanceSource.PlayOneShot(clip);
-
             Destroy(instanceSource,clip.length / instanceSource.pitch);
         }
     }
