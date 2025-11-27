@@ -273,6 +273,11 @@ public class ObstacleSpawner : MonoBehaviour
         strikeMade = false;
         Debug.Log("Zues Made");
         GameObject zeusInstance = Instantiate(zeus,ZeusPos,transform.rotation);
+        if (CameraShaker.Instance != null)
+        {
+            // Durasi 0.5 detik, kekuatan getaran 0.2
+            CameraShaker.Instance.Shake(2.1f, 0.5f);
+        }
     }
 
     public void ZeusCooldown()
@@ -298,6 +303,12 @@ public class ObstacleSpawner : MonoBehaviour
             {
                 Debug.Log("Strike Made");
                 GameObject strikeInstance = Instantiate(strike,strikeDict[i] - new Vector3(0,distance_box,0),transform.rotation);
+            }
+
+            if (CameraShaker.Instance != null)
+            {
+                // Durasi 0.5 detik, kekuatan getaran 0.2
+                CameraShaker.Instance.Shake(0.7f, 1f);
             }
         }
 

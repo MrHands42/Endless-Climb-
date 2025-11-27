@@ -49,8 +49,8 @@ MonoBehaviour:
   speed: 5
   death: -6.5
   soundEffect: 16
-  slowFactor: 0.001
-  duration: 3
+  slowFactor: 0.2
+  duration: 3.7
 --- !u!212 &8909711786881031222
 SpriteRenderer:
   m_ObjectHideFlags: 0
