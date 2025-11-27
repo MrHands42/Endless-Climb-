@@ -51,16 +51,9 @@ public class ObstacleSpawner2 : MonoBehaviour
     private Vector3 obstaclePosition = Vector3.zero;
     private int obstaclePool = 4;
     private GameObject warningClone;
+    private bool flipBird = false; // New: Track if the bird sprite should be flipped
 
-    private void Flip()
-    {
-
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.flipX = true;
-        }
-    }
+    // Removed the incorrect Flip() method
 
     public float spawnTime = 2;
     private float timer = 0;
@@ -113,14 +106,15 @@ public class ObstacleSpawner2 : MonoBehaviour
 
                     if (dir == 0) //left
                     {
-                    obstaclePosition = BirdPos + new Vector3(-outside_box_x, -distance_box + distance_box * pos_offset,0);
-                    warningPosition = obstaclePosition + new Vector3(BirdWarning_offset,0,0);
-                    Flip();
+                        obstaclePosition = BirdPos + new Vector3(-outside_box_x, -distance_box + distance_box * pos_offset,0);
+                        warningPosition = obstaclePosition + new Vector3(BirdWarning_offset,0,0);
+                        flipBird = true; // Set to flip the sprite (bird spawning from left, so flip to face right)
                     }
                     else if (dir == 1) // right
                     {
-                    obstaclePosition = BirdPos + new Vector3(outside_box_x, -distance_box + distance_box * pos_offset,0);
-                    warningPosition = obstaclePosition - new Vector3(BirdWarning_offset,0,0);
+                        obstaclePosition = BirdPos + new Vector3(outside_box_x, -distance_box + distance_box * pos_offset,0);
+                        warningPosition = obstaclePosition - new Vector3(BirdWarning_offset,0,0);
+                        flipBird = false; // No flip needed (bird spawning from right, faces left by default)
                     }
                     CreateWarning("bird");
                     break;
@@ -153,7 +147,16 @@ public class ObstacleSpawner2 : MonoBehaviour
             break;
         case 2:
             Debug.Log("Bird Made");
-            Instantiate(bird,obstaclePosition,transform.rotation);
+            GameObject birdInstance = Instantiate(bird,obstaclePosition,transform.rotation);
+            // Flip the bird's sprite if needed
+            if (flipBird)
+            {
+                SpriteRenderer birdRenderer = birdInstance.GetComponent<SpriteRenderer>();
+                if (birdRenderer != null)
+                {
+                    birdRenderer.flipX = true; // Flip horizontally to face the opposite direction
+                }
+            }
             break;
         }
     }
@@ -162,7 +165,7 @@ public class ObstacleSpawner2 : MonoBehaviour
     {
         Debug.Log("Banana Made");
         GameObject bananaInstance = Instantiate(banana,MonkeyPos,transform.rotation);
-        bananaInstance.GetComponent<BananaObstacle>().direction = bananaDirection;
+        bananaInstance.GetComponent<BananaObstacle>().direction = bananaDirection; // Assuming BananaObstacle is the script name; adjust if needed
     }    
 
     public void CreateMonkey()
