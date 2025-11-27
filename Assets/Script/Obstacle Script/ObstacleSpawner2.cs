@@ -52,6 +52,15 @@ public class ObstacleSpawner2 : MonoBehaviour
     private int obstaclePool = 4;
     private GameObject warningClone;
 
+    private void Flip()
+    {
+
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.flipX = true;
+        }
+    }
 
     public float spawnTime = 2;
     private float timer = 0;
@@ -106,6 +115,7 @@ public class ObstacleSpawner2 : MonoBehaviour
                     {
                     obstaclePosition = BirdPos + new Vector3(-outside_box_x, -distance_box + distance_box * pos_offset,0);
                     warningPosition = obstaclePosition + new Vector3(BirdWarning_offset,0,0);
+                    Flip();
                     }
                     else if (dir == 1) // right
                     {

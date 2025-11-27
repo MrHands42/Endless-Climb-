@@ -106,13 +106,18 @@ public class MonkeyObstacle : MonoBehaviour
     private float throwCount = 0;
 
     public UnityEvent ThrowBanana;
-
+    public Animator animator;
 
     public void Start()
     {
         AudioManager.AudioManagerInstance.Play(SFX.Monkey);
         throwCount = 2;
         ThrowBanana.AddListener(GameObject.FindGameObjectWithTag("ObstacleSpawner").GetComponent<ObstacleSpawner>().BananaSignal);
+
+        if (animator != null)
+        {
+            animator.SetInteger("Monke", 0);
+        }
     }
 
     public void Update()
@@ -135,6 +140,12 @@ public class MonkeyObstacle : MonoBehaviour
         {
             ThrowBanana.Invoke();
             AudioManager.AudioManagerInstance.Play(SFX.Banana);
+
+            if (animator != null)
+            {
+                animator.SetInteger("Monke", 1);
+            }
+
             throwCount = 0;
         }
     }
