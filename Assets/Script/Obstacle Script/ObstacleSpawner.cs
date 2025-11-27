@@ -72,6 +72,13 @@ public class ObstacleSpawner : MonoBehaviour
     private float debugTimer = 0;
 
 
+    [Header("Lightning Flash")]
+    public GameObject lightningFlashVisual; // Sprite Putih/Kuning yang menutupi layar
+    public float flashIntervalTime = 0.05f; // Cepatnya kedipan (50ms ON, 50ms OFF)
+    public float strikeDuration = 0.5f;     // Total durasi flash (Sama dengan durasi LightningObstacle)
+
+    private Coroutine flashCoroutine;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -83,6 +90,40 @@ public class ObstacleSpawner : MonoBehaviour
         BirdPos = new Vector3(0,0,-1); 
         MonkeyPos = new Vector3(0,4.5f,-1);
     }
+
+    public void StartFlash()
+    {
+        // Pastikan tidak ada flash yang sedang berjalan
+        if (flashCoroutine != null) StopCoroutine(flashCoroutine);
+
+        // Mulai flashing
+        flashCoroutine = StartCoroutine(FlashRoutine());
+    }
+
+    private IEnumerator FlashRoutine()
+    {
+        // Total waktu yang dihabiskan untuk flashing
+        float elapsedTime = 0f;
+
+        while (elapsedTime < strikeDuration)
+        {
+            // 1. Nyalakan Visual (Flash ON)
+            if (lightningFlashVisual != null) lightningFlashVisual.SetActive(true);
+            yield return new WaitForSeconds(flashIntervalTime);
+
+            // 2. Matikan Visual (Flash OFF)
+            if (lightningFlashVisual != null) lightningFlashVisual.SetActive(false);
+            yield return new WaitForSeconds(flashIntervalTime);
+
+            // Akumulasi waktu
+            elapsedTime += (flashIntervalTime * 2);
+        }
+
+        // Pastikan visual dimatikan total di akhir
+        if (lightningFlashVisual != null) lightningFlashVisual.SetActive(false);
+        flashCoroutine = null;
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -232,6 +273,11 @@ public class ObstacleSpawner : MonoBehaviour
         strikeMade = false;
         Debug.Log("Zues Made");
         GameObject zeusInstance = Instantiate(zeus,ZeusPos,transform.rotation);
+        if (CameraShaker.Instance != null)
+        {
+            // Durasi 0.5 detik, kekuatan getaran 0.2
+            CameraShaker.Instance.Shake(2.1f, 0.5f);
+        }
     }
 
     public void ZeusCooldown()
@@ -258,7 +304,14 @@ public class ObstacleSpawner : MonoBehaviour
                 Debug.Log("Strike Made");
                 GameObject strikeInstance = Instantiate(strike,strikeDict[i] - new Vector3(0,distance_box,0),transform.rotation);
             }
+
+            if (CameraShaker.Instance != null)
+            {
+                // Durasi 0.5 detik, kekuatan getaran 0.2
+                CameraShaker.Instance.Shake(0.7f, 1f);
+            }
         }
+
         strikeMade = true;
     }
 
@@ -273,7 +326,10 @@ public class ObstacleSpawner : MonoBehaviour
 
         strikeDict[1] = new Vector3(-distance_box + distance_box*randomNum,distance_box,-1);
         strikeDict[2] = new Vector3(-distance_box + distance_box*randomNum2,distance_box,-1);
-        
+
+
+        StartFlash();
+
         for (int i = 0; i < 3; i++)
         {
             GameObject instance = Instantiate(warning,strikeDict[1] - new Vector3(0,distance_box*i),transform.rotation);
