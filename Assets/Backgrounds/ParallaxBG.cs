@@ -31,7 +31,6 @@ public class ParallaxBG : MonoBehaviour
         }
     }
 
-    // Update is called once per    frame
     void Update()
     {
         transform.Translate(Vector2.down * parallaxEffect * Time.deltaTime);
