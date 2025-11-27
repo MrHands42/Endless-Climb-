@@ -5009,17 +5009,49 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 251677137931282778, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1003228863361552838, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113222440117913838, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315038258096381987, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2469025475983331418, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4725874157545432156, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
       propertyPath: m_Name
       value: Tile
       objectReference: {fileID: 0}
     - target: {fileID: 4725874157545432156, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4725874157545432156, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
       propertyPath: m_TagString
       value: Tiles
+      objectReference: {fileID: 0}
+    - target: {fileID: 5990807305731599852, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483729335189798640, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6670946693234088927, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
+      propertyPath: m_Color.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7099714812634700066, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5059,6 +5091,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7099714812634700066, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9131843552505964874, guid: a64826516669d1f42978cc7e87e3d7aa, type: 3}
+      propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
