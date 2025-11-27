@@ -32,17 +32,27 @@ public class HorizontalObstacle : MonoBehaviour
     public float speed = 12;
     public float death = 10f;
     protected int Obsdirection = 1;
+    private SpriteRenderer sr;
     // Start is called before the first frame update
+
     void Start()
     {
         AudioManager.AudioManagerInstance.Play(SFX.Bird);
-        if (transform.position.x < 0) // spawn left arah kanan
+
+        sr = GetComponent<SpriteRenderer>();
+
+        if (transform.position.x < 0) 
         {
             Obsdirection = 0;
+            if (sr != null)
+                sr.flipX = false;
         }
-        else if (transform.position.x > 0) // spawn right arah kiri
+        else if (transform.position.x > 0)
         {
             Obsdirection = 1;
+
+            if (sr != null)
+                sr.flipX = true;
         }
     }
 
