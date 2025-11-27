@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class ObstacleSpawner : MonoBehaviour
 {
@@ -10,9 +11,9 @@ public class ObstacleSpawner : MonoBehaviour
 
     [Header("Grid Componenets")]
     // Sizes
-    public float distance_box = 2.5f; // jarak antar kotak
-    public float outside_box_y = 6.5f; // keluar screen (y axis)
-    public float outside_box_x = 10f; // keluar screen (x axis)
+    public float distance_box = 2.5f;    // jarak antar kotak
+    public float outside_box_y = 6.5f;   // keluar screen (y axis)
+    public float outside_box_x = 10f;    // keluar screen (x axis)
 
     [Header("Warning")]
     // Warning
@@ -27,7 +28,7 @@ public class ObstacleSpawner : MonoBehaviour
     public float vertObsWarning_offset = 2;
 
     [Header("Horizontal Obstacles")]
-    // Obstacles:bird
+    // Obstacles: bird
     public GameObject bird;
     private Vector3 BirdPos = Vector3.zero;
     public float BirdWarning_offset = 3.5f;
@@ -42,31 +43,47 @@ public class ObstacleSpawner : MonoBehaviour
     private Vector3 bananaDirection = Vector3.zero;
     private Vector3 MonkeyPos = Vector3.zero;
 
-    [Header("Zeus Obstacles")]
-    // Add this: Lightning prefab
-    public GameObject lightning;
-    private Vector3 lightningPosition = Vector3.zero;  // Or set dynamically
-
     public GameObject tiles;
     private GameObject target;
 
+    [Header("Zeus Obstacle")]
+    public GameObject zeus;
+    public GameObject strike;
+    public float zeusSpawn = 55;
+    private float zeusTimer = 10;
+    private Vector3 ZeusPos = new Vector3(0,0,-1);
+    private Vector3 strikePos = new Vector3(0,0,-1);
+    private Dictionary<int,Vector3> strikeDict = new Dictionary<int, Vector3>();
+    private bool strikeMade = false;
 
     // other shit
     private int obstacleObject = 0; // 0 = rock, 1 = goat, 2 = bird, 3 = monkey, 4 = banana
     private Vector3 obstaclePosition = Vector3.zero;
     private int obstaclePool = 4;
     private GameObject warningClone;
-    private bool flipBird = false; // Track if the bird should be flipped
 
-    public float spawnTime = 2;
+    [Header("Spawn Rate")]
+    public float spawnTime = 10;
+    public float slowSpawn = 4f;
+    public float fastSpawn = 0.5f;
+    public float speedUpDuration = 60f;
     private float timer = 0;
 
     private float debugTimer = 0;
 
 
+    [Header("Lightning Flash")]
+    public GameObject lightningFlashVisual; // Sprite Putih/Kuning yang menutupi layar
+    public float flashIntervalTime = 0.05f; // Cepatnya kedipan (50ms ON, 50ms OFF)
+    public float strikeDuration = 0.5f;     // Total durasi flash (Sama dengan durasi LightningObstacle)
+
+    private Coroutine flashCoroutine;
+
     // Start is called before the first frame update
     void Start()
     {
+        strikeDict[1] = new Vector3(0,0,-1);
+        strikeDict[2] = new Vector3(0,0,-1);
         player = GameObject.FindGameObjectWithTag("Player");
         obstaclePool = 3;
         vertObsPos = new Vector3(0,outside_box_y,-1); 
@@ -74,14 +91,50 @@ public class ObstacleSpawner : MonoBehaviour
         MonkeyPos = new Vector3(0,4.5f,-1);
     }
 
+    public void StartFlash()
+    {
+        // Pastikan tidak ada flash yang sedang berjalan
+        if (flashCoroutine != null) StopCoroutine(flashCoroutine);
+
+        // Mulai flashing
+        flashCoroutine = StartCoroutine(FlashRoutine());
+    }
+
+    private IEnumerator FlashRoutine()
+    {
+        // Total waktu yang dihabiskan untuk flashing
+        float elapsedTime = 0f;
+
+        while (elapsedTime < strikeDuration)
+        {
+            // 1. Nyalakan Visual (Flash ON)
+            if (lightningFlashVisual != null) lightningFlashVisual.SetActive(true);
+            yield return new WaitForSeconds(flashIntervalTime);
+
+            // 2. Matikan Visual (Flash OFF)
+            if (lightningFlashVisual != null) lightningFlashVisual.SetActive(false);
+            yield return new WaitForSeconds(flashIntervalTime);
+
+            // Akumulasi waktu
+            elapsedTime += (flashIntervalTime * 2);
+        }
+
+        // Pastikan visual dimatikan total di akhir
+        if (lightningFlashVisual != null) lightningFlashVisual.SetActive(false);
+        flashCoroutine = null;
+    }
+
+
     // Update is called once per frame
     void Update()
     {
+        float t = Mathf.Clamp01(Time.timeSinceLevelLoad / speedUpDuration);
+        spawnTime = Mathf.Lerp(slowSpawn, fastSpawn, t);
+        ZeusCooldown();
         MonkeyCooldown();
         if (timer < spawnTime)
         {
             // debugTimer += Time.deltaTime;
-            Debug.Log("Timer: " + debugTimer);
             timer += Time.deltaTime;
         }
         else
@@ -109,15 +162,13 @@ public class ObstacleSpawner : MonoBehaviour
 
                     if (dir == 0) //left
                     {
-                        obstaclePosition = BirdPos + new Vector3(-outside_box_x, -distance_box + distance_box * pos_offset,0);
-                        warningPosition = obstaclePosition + new Vector3(BirdWarning_offset,0,0);
-                        flipBird = true;  // FIXED: Set to flip (bird spawning from left, so mirror to face right)
+                    obstaclePosition = BirdPos + new Vector3(-outside_box_x, -distance_box + distance_box * pos_offset,0);
+                    warningPosition = obstaclePosition + new Vector3(BirdWarning_offset,0,0);
                     }
                     else if (dir == 1) // right
                     {
-                        obstaclePosition = BirdPos + new Vector3(outside_box_x, -distance_box + distance_box * pos_offset,0);
-                        warningPosition = obstaclePosition - new Vector3(BirdWarning_offset,0,0);
-                        flipBird = false;  // FIXED: No flip needed (bird spawning from right, faces left by default)
+                    obstaclePosition = BirdPos + new Vector3(outside_box_x, -distance_box + distance_box * pos_offset,0);
+                    warningPosition = obstaclePosition - new Vector3(BirdWarning_offset,0,0);
                     }
                     CreateWarning("bird");
                     break;
@@ -150,12 +201,7 @@ public class ObstacleSpawner : MonoBehaviour
             break;
         case 2:
             Debug.Log("Bird Made");
-            GameObject birdInstance = Instantiate(bird,obstaclePosition,transform.rotation);
-            // FIXED: Flip the bird's transform scale (works with Animator)
-            if (flipBird)
-            {
-                birdInstance.transform.localScale = new Vector3(-1, 1, 1); // Horizontal flip to face the opposite direction
-            }
+            Instantiate(bird,obstaclePosition,transform.rotation);
             break;
         }
     }
@@ -164,7 +210,7 @@ public class ObstacleSpawner : MonoBehaviour
     {
         Debug.Log("Banana Made");
         GameObject bananaInstance = Instantiate(banana,MonkeyPos,transform.rotation);
-        bananaInstance.GetComponent<BananaObstacle>().direction = bananaDirection; // Assuming BananaObstacle is the script name; adjust if needed
+        bananaInstance.GetComponent<BananaObstacle>().direction = bananaDirection;
     }    
 
     public void CreateMonkey()
@@ -183,8 +229,7 @@ public class ObstacleSpawner : MonoBehaviour
         {
             var pos_offset = Random.Range(0,3);
             MonkeyPos = new Vector3(-distance_box + distance_box * pos_offset,4.5f,-1);
-            obstaclePosition = MonkeyPos;
-            warningPosition = obstaclePosition;
+            warningPosition = MonkeyPos;
 
             GameObject instance = Instantiate(warning,warningPosition,transform.rotation);
             instance.GetComponent<Warning>().warningType = "monkey";
@@ -222,13 +267,69 @@ public class ObstacleSpawner : MonoBehaviour
         instance.GetComponent<Warning>().warningType = "banana";
     }
 
-    // ADDED: Lightning signal for Zeus
+
+    public void CreateZeus()
+    {
+        strikeMade = false;
+        Debug.Log("Zues Made");
+        GameObject zeusInstance = Instantiate(zeus,ZeusPos,transform.rotation);
+    }
+
+    public void ZeusCooldown()
+    {
+        if (zeusTimer < zeusSpawn)
+        {
+            zeusTimer += Time.deltaTime;
+        }
+        else
+        {
+            GameObject instance = Instantiate(warning,ZeusPos,transform.rotation);
+            instance.GetComponent<Warning>().warningType = "zeus";
+
+            zeusTimer = 0;
+        }
+    }
+
+    public void CreateStrike()
+    {
+        if (!strikeMade)
+        {
+            for (int i = 1; i < 3; i++)
+            {
+                Debug.Log("Strike Made");
+                GameObject strikeInstance = Instantiate(strike,strikeDict[i] - new Vector3(0,distance_box,0),transform.rotation);
+            }
+        }
+
+        strikeMade = true;
+        StartFlash();
+    }
+
     public void LightningSignal()
     {
-        Debug.Log("Lightning Signal Received - Spawning Lightning");
-        // Example: Spawn lightning at a fixed position (e.g., center or near player)
-        // Adjust as needed; you could make it target the player or a random tile like bananas
-        lightningPosition = new Vector3(0, 0, -1);  // Example: Spawn at origin; change to player position if desired
-        Instantiate(lightning, lightningPosition, transform.rotation);
+        int randomNum = Random.Range(0,3);
+        int randomNum2 = Random.Range(0,3);
+        while (randomNum2 == randomNum)
+        {
+            randomNum2 = Random.Range(0,3);
+        }
+
+        strikeDict[1] = new Vector3(-distance_box + distance_box*randomNum,distance_box,-1);
+        strikeDict[2] = new Vector3(-distance_box + distance_box*randomNum2,distance_box,-1);
+
+
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject instance = Instantiate(warning,strikeDict[1] - new Vector3(0,distance_box*i),transform.rotation);
+            instance.GetComponent<Warning>().warningType = "strike";
+            instance.GetComponent<Warning>().flashcount = 10f;
+        }
+        
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject instance = Instantiate(warning,strikeDict[2] - new Vector3(0,distance_box*i),transform.rotation);
+            instance.GetComponent<Warning>().warningType = "strike";
+            instance.GetComponent<Warning>().flashcount = 10f;
+        }
     }
 }
