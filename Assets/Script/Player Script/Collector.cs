@@ -36,7 +36,7 @@ public class Collector : MonoBehaviour
                 return;
             }
 
-            SlipMechanic mechanic = GetComponent<SlipMechanic>();
+            PlayerMovement mechanic = GetComponent<PlayerMovement>();
             if (mechanic != null)
             {
                 mechanic.RopeSlip();

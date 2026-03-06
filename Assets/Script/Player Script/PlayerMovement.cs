@@ -12,8 +12,6 @@ public class PlayerMovement : MonoBehaviour
     private const float DashDuration = 0.2f;
     private bool isDashing = false;
 
-    private bool facingLeft = false; // Tracks if currently facing left
-
     [Header("Visuals")]
     public Animator animator;
 
@@ -24,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Vibration Settings")]
     public Transform playerBodyVisual;
-    public float kekuatanGetar = 0.05f;
+    public float kekuatanGetar = 0.5f;
 
     // Merged from SlipMechanic: Private variables for idle/fall logic
     private float mulaiGetarDetik;
@@ -32,6 +30,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isDead = false;  // Retained from previous fix
     private Vector3 posisiTerakhir;
     private Vector3 posisiAsliBody;
+
+    public bool wantAudio = true;  // Pengaturan untuk mengaktifkan atau menonaktifkan audio, supaya ga double audionya. Hanya aktifkan di 1 tempat
 
     void Start()
     {
@@ -130,6 +130,9 @@ public class PlayerMovement : MonoBehaviour
     public void RopeSlip()
     {
         if (isDead) return;
+
+        FindObjectOfType<Collector>().BreakShield();    // Memastikan player ga jatoh bawa shield + biar keren aja
+
         isDead = true;
 
         ResetPosisiBody();
@@ -152,12 +155,13 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(Vector2.up * 12f, ForceMode2D.Impulse);
         }
 
-        if (AudioManager.AudioManagerInstance != null)
+        if (AudioManager.AudioManagerInstance != null && wantAudio)
         {
             AudioManager.AudioManagerInstance.Play(SFX.Impact);
+            StartCoroutine(WaitAndShowGameOver());
         }
 
-        StartCoroutine(WaitAndShowGameOver());
+        
     }
 
     // Merged from SlipMechanic: Game over coroutine
@@ -173,7 +177,6 @@ public class PlayerMovement : MonoBehaviour
     // Original PlayerMovement methods (unchanged)
     private void Flip()
     {
-        facingLeft = true;
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
@@ -183,7 +186,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Unflip()
     {
-        facingLeft = false;
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
@@ -198,7 +200,10 @@ public class PlayerMovement : MonoBehaviour
         if (newX >= GridMin && newX <= GridMax && newY >= GridMin && newY <= GridMax)
         {
             StartCoroutine(DashCoroutine(newX, newY, deltaX, deltaY));
-            AudioManager.AudioManagerInstance.Play(SFX.ChangeGrid);
+            if (AudioManager.AudioManagerInstance != null && wantAudio)
+            {
+                AudioManager.AudioManagerInstance.Play(SFX.ChangeGrid);
+            }    
         }
         else
         {
