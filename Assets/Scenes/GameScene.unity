@@ -349,7 +349,7 @@ GameObject:
   - component: {fileID: 97238485}
   - component: {fileID: 97238484}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Retry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -418,9 +418,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 305698567}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: Restart
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Transisi, Assembly-CSharp
+        m_MethodName: RestartScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2019,7 +2019,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.854902, g: 0.41960788, b: 0.34117648, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -3511,9 +3511,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 305698567}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: Restart
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Transisi, Assembly-CSharp
+        m_MethodName: RestartScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3732,9 +3732,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 305698567}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: BackToMenu
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Transisi, Assembly-CSharp
+        m_MethodName: KeMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4455,6 +4455,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 41151270}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2064502160
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984391249472981131, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_Name
+      value: Transisi
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
 --- !u!1 &2084829138
 GameObject:
   m_ObjectHideFlags: 0
@@ -5035,6 +5092,8 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 360940520}
+  - {fileID: 2064502160}
   - {fileID: 519420032}
   - {fileID: 842332741245927404}
   - {fileID: 2023732090}
@@ -5044,7 +5103,6 @@ SceneRoots:
   - {fileID: 6298154914284499503}
   - {fileID: 1179456557109414349}
   - {fileID: 398712101}
-  - {fileID: 360940520}
   - {fileID: 4814085516523961001}
   - {fileID: 368027385}
   - {fileID: 41151270}

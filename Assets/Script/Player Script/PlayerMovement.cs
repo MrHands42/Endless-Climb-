@@ -75,8 +75,11 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                timerDiam = 0f;
-                ResetPosisiBody();
+                if (timerDiam > 0f)
+                {
+                    timerDiam = 0f;
+                    ResetPosisiBody();
+                }
             }
             posisiTerakhir = transform.position;
         }
