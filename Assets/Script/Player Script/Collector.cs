@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Collector : MonoBehaviour
 {
-    [Header("Obstacle Tags")]
-    public List<string> obstacleTags = new List<string> { "Obstacle" };  // Add more if needed, e.g., "Spike"
+    // Kumatikan karena belom perlu
+    //[Header("Obstacle Tambahan")]   // Isi kalau ada obstacle/hal yang ngebunuh player selain gameobject dengan tag "Obstacle".
+    //public List<string> obstacleTags = new List<string> { "Obstacle" };
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
@@ -19,7 +20,7 @@ public class Collector : MonoBehaviour
             return;
 
         }
-        else if (obstacleTags.Contains(collision.tag))
+        else if (collision.CompareTag("Obstacle"))
         {
             // Cek apakah ada invincibility apa engga
             if (isInvincible)
@@ -40,10 +41,7 @@ public class Collector : MonoBehaviour
             PlayerMovement mechanic = GetComponentInParent<PlayerMovement>();
             if (mechanic != null)
             {
-                // Hentikan efek visual Collector (seperti Invincibility)
-                StopAllCoroutines();
-
-                // Suruh Induk mengeksekusi logika jatuh
+                StopAllCoroutines();    // Hentikan efek visual Collector (seperti Invincibility)
                 mechanic.RopeSlip();
             }
             else
@@ -128,7 +126,7 @@ public class Collector : MonoBehaviour
 
         isInvincible = false;
 
-        // Matikan Aura Maxwell
+        // Matikan Aura Maxwell/Invincibility
         if (invincibilityRenderer != null) invincibilityRenderer.gameObject.SetActive(false);
         Debug.Log("Invicibility habis");
     }

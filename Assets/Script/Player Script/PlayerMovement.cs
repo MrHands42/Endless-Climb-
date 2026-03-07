@@ -32,12 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 posisiTerakhir;
     private Vector3 posisiAsliBody;
 
-    public bool destroyOnFall = true;  // Opsi untuk menghancurkan objek Player saat jatuh, atau hanya disable dan biarkan efek jatuhnya jalan
-
-    public bool wantAudio = true;  // Pengaturan untuk mengaktifkan atau menonaktifkan audio, supaya ga double audionya. Hanya aktifkan di 1 tempat
-
-    public bool Mambo = false;  // test bool
-
+    private Rigidbody2D rb;
     void Start()
     {
         // Original PlayerMovement Start logic
@@ -92,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
             return;  // Block input if dead or dashing
         }
 
-        if (!isDead && !Mambo) {
+        if (!isDead) {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 Debug.Log("Key W pressed: Setting Direction to 1 (Up)");
@@ -140,47 +135,39 @@ public class PlayerMovement : MonoBehaviour
     // Merged from SlipMechanic: Fall method (kept as RopeSlip for compatibility)
     virtual public void RopeSlip()
     {
-        if (Mambo)
+        if (isDead) return;
+        isDead = true;
+        StopAllCoroutines();
+        FindObjectOfType<Collector>().BreakShield();    // Memastikan player ga jatoh bawa shield + biar keren aja
+
+        //ResetPosisiBody();
+
+        Debug.Log("Player Jatuh!");
+
+        if (animator != null) animator.SetInteger("Direction", 7);
+
+        // Disable self (PlayerMovement) to prevent movement
+        enabled = false;
+
+        if (GetComponent<Collider2D>() != null)
+            GetComponent<Collider2D>().enabled = false;
+
+
+        if (rb == null)
         {
-            return;
+            rb = GetComponent<Rigidbody2D>();
         }
 
-        else 
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.gravityScale = 4f;
+        rb.velocity = Vector2.zero;
+        rb.AddForce(Vector2.up * 12f, ForceMode2D.Impulse);
+
+        if (AudioManager.AudioManagerInstance != null)
         {
-            Mambo = true;
-            if (isDead) return;
-            isDead = true;
-            StopAllCoroutines();
-            FindObjectOfType<Collector>().BreakShield();    // Memastikan player ga jatoh bawa shield + biar keren aja
-
-            //ResetPosisiBody();
-
-            Debug.Log("Player Jatuh!");
-
-            if (animator != null) animator.SetInteger("Direction", 7);
-
-            // Disable self (PlayerMovement) to prevent movement
-            enabled = false;
-
-            if (GetComponent<Collider2D>() != null)
-                GetComponent<Collider2D>().enabled = false;
-
-            Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.bodyType = RigidbodyType2D.Dynamic;
-                rb.gravityScale = 4f;
-                rb.velocity = Vector2.zero;
-                rb.AddForce(Vector2.up * 12f, ForceMode2D.Impulse);
-            }
-
-            if (AudioManager.AudioManagerInstance != null && wantAudio)
-            {
-                AudioManager.AudioManagerInstance.Play(SFX.Impact);
-                StartCoroutine(WaitAndShowGameOver());
-            }
-        }
-        
+            AudioManager.AudioManagerInstance.Play(SFX.Impact);
+            StartCoroutine(WaitAndShowGameOver());
+        }        
     }
 
     // Merged from SlipMechanic: Game over coroutine
@@ -197,13 +184,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void Flip()
     {
-        if (spriteVisual != null)
+        if (spriteVisual != null)   // Kalau spriteVisual udah di-assign
         {
             spriteVisual.flipX = true;
         }
-        else
+        else // Ga ada spriteVisual
         {
-            GetComponentInChildren<SpriteRenderer>().flipX = true;
+            SpriteRenderer cadanganVisual = GetComponentInChildren<SpriteRenderer>();
+            if (cadanganVisual != null) // Kalau animator gaada
+            {
+                cadanganVisual.flipX = true;
+            }
         }
     }
 
@@ -215,7 +206,11 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            GetComponentInChildren<SpriteRenderer>().flipX = false;
+            SpriteRenderer cadanganVisual = GetComponentInChildren<SpriteRenderer>();
+            if (cadanganVisual != null)
+            {
+                cadanganVisual.flipX = false;
+            }
         }
     }
 
@@ -226,7 +221,7 @@ public class PlayerMovement : MonoBehaviour
         if (newX >= GridMin && newX <= GridMax && newY >= GridMin && newY <= GridMax)
         {
             StartCoroutine(DashCoroutine(newX, newY, deltaX, deltaY));
-            if (AudioManager.AudioManagerInstance != null && wantAudio)
+            if (AudioManager.AudioManagerInstance != null)
             {
                 AudioManager.AudioManagerInstance.Play(SFX.ChangeGrid);
             }    
