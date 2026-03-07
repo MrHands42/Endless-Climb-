@@ -35,4 +35,5 @@ public class GameManager : MonoBehaviour
         AudioManager.AudioManagerInstance.Play(SFX.EndScreen);
         Debug.Log("Game Over!");
     }
+
 }

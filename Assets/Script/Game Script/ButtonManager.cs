@@ -41,7 +41,6 @@ public class ButtonManager : MonoBehaviour
             if (isPaused)
             {
                 PauseGame();
-
             }
             else
             {
@@ -65,6 +64,26 @@ public class ButtonManager : MonoBehaviour
         Cursor.visible = true;
     }
 
+    public void TogglePauseGameplay()
+    {
+        if (pauseMenuUI != null)
+        {
+            bool isCurrentlyActive = pauseMenuUI.activeSelf;
+            bool targetState = !isCurrentlyActive;
+
+            pauseMenuUI.SetActive(targetState);
+
+            // Berhentikan waktu total (0 = berhenti, 1 = jalan)
+            Time.timeScale = targetState ? 0f : 1f;
+
+            // Pastikan kursor muncul agar bisa klik tombol menu
+            Cursor.visible = targetState;
+
+            Debug.Log(targetState ? "Game Paused (Local)" : "Game Resumed (Local)");
+        }
+        TogglePause();
+    }
+
     private void ResumeGame()
     {
         AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
@@ -83,10 +102,12 @@ public class ButtonManager : MonoBehaviour
     {
         AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         pauseMenuUI.SetActive(false);
         gameOverUI.SetActive(false);
         ScoreManager.instance.ResetScore();
+        isPaused = false;
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void BackToMenu()
