@@ -134,7 +134,7 @@ public class Transisi : MonoBehaviour
 
         if (Transition != null)
         {
-            Transition.SetTrigger("Start");
+            Transition.SetTrigger("Terangkan");
         }
         else
         {
