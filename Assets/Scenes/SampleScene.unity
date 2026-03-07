@@ -3053,7 +3053,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 305698567}
         m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: TogglePause
+        m_MethodName: TogglePauseGameplay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
