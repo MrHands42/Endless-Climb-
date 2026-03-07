@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Visuals")]
     public Animator animator;
+    public SpriteRenderer spriteVisual;
 
     // Merged from SlipMechanic: Idle detection and fall settings
     [Header("Slip Mechanic Settings")]
@@ -31,7 +32,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 posisiTerakhir;
     private Vector3 posisiAsliBody;
 
+    public bool destroyOnFall = true;  // Opsi untuk menghancurkan objek Player saat jatuh, atau hanya disable dan biarkan efek jatuhnya jalan
+
     public bool wantAudio = true;  // Pengaturan untuk mengaktifkan atau menonaktifkan audio, supaya ga double audionya. Hanya aktifkan di 1 tempat
+
+    public bool Mambo = false;  // test bool
 
     void Start()
     {
@@ -40,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
         {
             animator = GetComponentInChildren<Animator>();
         }
+
         if (animator == null)
         {
             Debug.LogError("ERROR PARAH: Tidak ada Animator di Player ataupun Anak-anaknya!");
@@ -54,7 +60,9 @@ public class PlayerMovement : MonoBehaviour
         mulaiGetarDetik = batasWaktuDiam * (2f / 3f);
         posisiTerakhir = transform.position;
         if (playerBodyVisual != null)
+        {
             posisiAsliBody = playerBodyVisual.localPosition;
+        }
     }
 
     // SINGLE Update method: Merges idle detection/vibration (from SlipMechanic) with input handling (from original PlayerMovement)
@@ -84,29 +92,31 @@ public class PlayerMovement : MonoBehaviour
             return;  // Block input if dead or dashing
         }
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Debug.Log("Key W pressed: Setting Direction to 1 (Up)");
-            if (animator != null) animator.SetInteger("Direction", 1);
-            StartDash(0f, MoveDistance);
-        }
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Debug.Log("Key S pressed: Setting Direction to 2 (Down)");
-            if (animator != null) animator.SetInteger("Direction", 2);
-            StartDash(0f, -MoveDistance);
-        }
-        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Debug.Log("Key A pressed: Setting Direction to 3 (Left)");
-            if (animator != null) animator.SetInteger("Direction", 3);
-            StartDash(-MoveDistance, 0f);
-        }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            Debug.Log("Key D pressed: Setting Direction to 4 (Right)");
-            if (animator != null) animator.SetInteger("Direction", 4);
-            StartDash(MoveDistance, 0f);
+        if (!isDead && !Mambo) {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Debug.Log("Key W pressed: Setting Direction to 1 (Up)");
+                if (animator != null) animator.SetInteger("Direction", 1);
+                StartDash(0f, MoveDistance);
+            }
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                Debug.Log("Key S pressed: Setting Direction to 2 (Down)");
+                if (animator != null) animator.SetInteger("Direction", 2);
+                StartDash(0f, -MoveDistance);
+            }
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                Debug.Log("Key A pressed: Setting Direction to 3 (Left)");
+                if (animator != null) animator.SetInteger("Direction", 3);
+                StartDash(-MoveDistance, 0f);
+            }
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                Debug.Log("Key D pressed: Setting Direction to 4 (Right)");
+                if (animator != null) animator.SetInteger("Direction", 4);
+                StartDash(MoveDistance, 0f);
+            }
         }
     }
 
@@ -124,43 +134,52 @@ public class PlayerMovement : MonoBehaviour
     void ResetPosisiBody()
     {
         if (playerBodyVisual != null) playerBodyVisual.localPosition = posisiAsliBody;
+        Debug.Log("Player moved: Resetting idle timer and body position.");
     }
 
     // Merged from SlipMechanic: Fall method (kept as RopeSlip for compatibility)
-    public void RopeSlip()
+    virtual public void RopeSlip()
     {
-        if (isDead) return;
-
-        FindObjectOfType<Collector>().BreakShield();    // Memastikan player ga jatoh bawa shield + biar keren aja
-
-        isDead = true;
-
-        ResetPosisiBody();
-        Debug.Log("Player Jatuh!");
-
-        if (animator != null) animator.SetInteger("Direction", 7);
-
-        // Disable self (PlayerMovement) to prevent movement
-        enabled = false;
-
-        if (GetComponent<Collider2D>() != null)
-            GetComponent<Collider2D>().enabled = false;
-
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        if (rb != null)
+        if (Mambo)
         {
-            rb.bodyType = RigidbodyType2D.Dynamic; 
-            rb.gravityScale = 4f; 
-            rb.velocity = Vector2.zero;
-            rb.AddForce(Vector2.up * 12f, ForceMode2D.Impulse);
+            return;
         }
 
-        if (AudioManager.AudioManagerInstance != null && wantAudio)
+        else 
         {
-            AudioManager.AudioManagerInstance.Play(SFX.Impact);
-            StartCoroutine(WaitAndShowGameOver());
-        }
+            Mambo = true;
+            if (isDead) return;
+            isDead = true;
+            StopAllCoroutines();
+            FindObjectOfType<Collector>().BreakShield();    // Memastikan player ga jatoh bawa shield + biar keren aja
 
+            //ResetPosisiBody();
+
+            Debug.Log("Player Jatuh!");
+
+            if (animator != null) animator.SetInteger("Direction", 7);
+
+            // Disable self (PlayerMovement) to prevent movement
+            enabled = false;
+
+            if (GetComponent<Collider2D>() != null)
+                GetComponent<Collider2D>().enabled = false;
+
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.bodyType = RigidbodyType2D.Dynamic;
+                rb.gravityScale = 4f;
+                rb.velocity = Vector2.zero;
+                rb.AddForce(Vector2.up * 12f, ForceMode2D.Impulse);
+            }
+
+            if (AudioManager.AudioManagerInstance != null && wantAudio)
+            {
+                AudioManager.AudioManagerInstance.Play(SFX.Impact);
+                StartCoroutine(WaitAndShowGameOver());
+            }
+        }
         
     }
 
@@ -175,21 +194,28 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Original PlayerMovement methods (unchanged)
+
     private void Flip()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
+        if (spriteVisual != null)
         {
-            spriteRenderer.flipX = true;
+            spriteVisual.flipX = true;
+        }
+        else
+        {
+            GetComponentInChildren<SpriteRenderer>().flipX = true;
         }
     }
 
     private void Unflip()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
+        if (spriteVisual != null)
         {
-            spriteRenderer.flipX = false;
+            spriteVisual.flipX = false;
+        }
+        else
+        {
+            GetComponentInChildren<SpriteRenderer>().flipX = false;
         }
     }
 
@@ -216,11 +242,6 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = true;
         Debug.Log("Dash started. Direction should be animating now.");
-
-        if (animator != null)
-        {
-            animator.SetTrigger("Dash");
-        }
 
         Vector3 startPos = transform.position;
         Vector3 targetPos = new Vector3(targetX, targetY, 0f);

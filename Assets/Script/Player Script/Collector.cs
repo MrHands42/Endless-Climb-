@@ -7,7 +7,7 @@ public class Collector : MonoBehaviour
     [Header("Obstacle Tags")]
     public List<string> obstacleTags = new List<string> { "Obstacle" };  // Add more if needed, e.g., "Spike"
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Trigger entered with: " + collision.gameObject.name + " (Tag: " + collision.tag + ")");
 
@@ -30,20 +30,25 @@ public class Collector : MonoBehaviour
 
             if (hasShield)
             {
-                Debug.Log("Shield pecah cik :0");
+                Debug.Log("Shield pecah cik");
                 BreakShield();
                 Destroy(collision.gameObject);
                 return;
             }
 
-            PlayerMovement mechanic = GetComponent<PlayerMovement>();
+            // --- JALUR KEMATIAN ---
+            PlayerMovement mechanic = GetComponentInParent<PlayerMovement>();
             if (mechanic != null)
             {
+                // Hentikan efek visual Collector (seperti Invincibility)
+                StopAllCoroutines();
+
+                // Suruh Induk mengeksekusi logika jatuh
                 mechanic.RopeSlip();
             }
             else
             {
-                Debug.LogError("JALUR B: Gawat! Script SlipMechanic TIDAK DITEMUKAN di Player! (Langsung Freeze)");
+                Debug.LogError("JALUR B: Gawat! Script PlayerMovement TIDAK DITEMUKAN di Parent! (Langsung Freeze)");
                 if (GameManager.Instance != null) GameManager.Instance.GameOver();
             }
         }
@@ -56,11 +61,11 @@ public class Collector : MonoBehaviour
 
     [Header("Invincibility Visuals")]
     public SpriteRenderer invincibilityRenderer;
-    private bool isInvincible = false;
+    public bool isInvincible = false;
 
     [Header("Shield Visuals")]
     public GameObject shieldVisual; 
-    private bool hasShield = false; 
+    public bool hasShield = false; 
 
     public void ActivateInvincibility(float duration)
     {
