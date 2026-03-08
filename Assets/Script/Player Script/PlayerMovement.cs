@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     // Merged from SlipMechanic: Private variables for idle/fall logic
     private float mulaiGetarDetik;
     private float timerDiam = 0f;
-    private bool isDead = false;  // Retained from previous fix
+    public bool isDead = false;  // Retained from previous fix
     private Vector3 posisiTerakhir;
     private Vector3 posisiAsliBody;
 

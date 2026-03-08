@@ -11,6 +11,8 @@ public class ButtonManager : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject gameOverUI;
 
+    public PlayerMovement playerScript;
+
     void Awake()
     {
         if (Instance == null)
@@ -101,14 +103,18 @@ public class ButtonManager : MonoBehaviour
     public void Restart()
     {
         AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
-        Time.timeScale = 1f;
-        pauseMenuUI.SetActive(false);
-        gameOverUI.SetActive(false);
-        ScoreManager.instance.ResetScore();
-        isPaused = false;
+        //pauseMenuUI.SetActive(false);
+        //gameOverUI.SetActive(false);
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        isPaused = false;
+        Transisi.instance.RestartScene();
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        //Transisi.instance.LoadCurrentLevel();
     }
+
 
     public void BackToMenu()
     {

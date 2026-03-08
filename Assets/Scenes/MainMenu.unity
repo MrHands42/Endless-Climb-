@@ -1522,6 +1522,11 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 3084706940185584005, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
   m_PrefabInstance: {fileID: 1868509869}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1020084741 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1473977116510849966, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+  m_PrefabInstance: {fileID: 1868509869}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1033980429
 GameObject:
   m_ObjectHideFlags: 0
@@ -2001,7 +2006,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1313283993
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2039,7 +2044,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5a7057deabbb0d4f9e8ec75d3582d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tutorialPanel: {fileID: 0}
+  tutorialPanel: {fileID: 1372703018}
 --- !u!82 &1313283995
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2993,6 +2998,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1727972334}
     m_Modifications:
+    - target: {fileID: 1603984999767674180, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1603984999767674180, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MasukGame
+      objectReference: {fileID: 0}
     - target: {fileID: 2874710842954296886, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -3001,10 +3014,38 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 2011160433}
+    - target: {fileID: 3619085028141165603, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6165397483666831666, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: CrossFade
+      value: 
+      objectReference: {fileID: 1010750460}
+    - target: {fileID: 6165397483666831666, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: GameStart1
+      value: 
+      objectReference: {fileID: 1020084741}
     - target: {fileID: 6165397483666831666, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
       propertyPath: Transition
       value: 
       objectReference: {fileID: 1010750460}
+    - target: {fileID: 6165397483666831666, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: Transition2
+      value: 
+      objectReference: {fileID: 1020084741}
+    - target: {fileID: 6165397483666831666, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: TransitionFade
+      value: 
+      objectReference: {fileID: 1010750460}
+    - target: {fileID: 6165397483666831666, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: TransitionStart
+      value: 
+      objectReference: {fileID: 1020084741}
+    - target: {fileID: 6165397483666831666, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+      propertyPath: transitiononTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6459671257419736121, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
