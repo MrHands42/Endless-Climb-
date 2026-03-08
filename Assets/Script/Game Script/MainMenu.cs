@@ -5,25 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    // Tambahkan ini: Deklarasi variabel untuk panel tutorial
-    public GameObject tutorialPanel;
+    public GameObject tutorialPanel;    
+    public GameObject settingPanel;
 
-    //public void GameStart()
-    //{
-    //    AudioManager.AudioManagerInstance.Play(SFX.PlayButton);
-    //    SceneManager.LoadScene("GameScene");
-    //    ScoreManager.instance.ResetScore();
-    //    // Menggunakan sistem Transisi Keren yang sudah kita buat
-    //    if (Transisi.instance != null)
-    //    {
-    //        //Transisi.instance.load("GameScene");
-    //    }
-    //    else
-    //    {
-    //        // Cadangan kalau skrip transisi tidak ditemukan
-    //        SceneManager.LoadScene("GameScene");
-    //    }
-    //}
+    public void GameStart()
+    {
+        // Play Play Button Sound
+        if (AudioManager.AudioManagerInstance != null)
+        {
+            AudioManager.AudioManagerInstance.Play(SFX.PlayButton);
+        }
+        else
+        {
+            Debug.LogError("AudioManagerInstance is null!");
+        }
+        
+        SceneManager.LoadScene("GameScene");
+        ScoreManager.instance.ResetScore();
+    }
+
     public void QuitGame()
     {
         AudioManager.AudioManagerInstance.Play(SFX.BackButton);
@@ -32,16 +32,31 @@ public class MainMenu : MonoBehaviour
 
     public void OpenTutorial()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
         tutorialPanel.SetActive(true);
     }
 
     public void CloseTutorial()
     {
         tutorialPanel.SetActive(false);
+        AudioManager.AudioManagerInstance.Play(SFX.BackButton);
+    }
+    
+    public void OpenOption()
+    {
+        settingPanel.SetActive(true);
+        AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
+    }
+
+    public void CloseSetting()
+    {
+        settingPanel.SetActive(false);
+        AudioManager.AudioManagerInstance.Play(SFX.BackButton);
     }
 
     public void OpenCutscene()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
         SceneManager.LoadScene("Comic");
     }
 }
