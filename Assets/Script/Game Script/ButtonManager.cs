@@ -11,6 +11,7 @@ public class ButtonManager : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject gameOverUI;
 
+    public Animator MainMenuAni;
     void Awake()
     {
         if (Instance == null)
@@ -52,10 +53,14 @@ public class ButtonManager : MonoBehaviour
     private void PauseGame()
     {
         AudioManager.AudioManagerInstance.Play(SFX.BackButton);
+
+        // 1. Bekukan waktu
         Time.timeScale = 0f;
+
         if (pauseMenuUI != null)
         {
             pauseMenuUI.SetActive(true);
+            if (MainMenuAni != null) MainMenuAni.SetTrigger("Down");
         }
         else
         {
@@ -64,37 +69,26 @@ public class ButtonManager : MonoBehaviour
         Cursor.visible = true;
     }
 
-    public void TogglePauseGameplay()
-    {
-        if (pauseMenuUI != null)
-        {
-            bool isCurrentlyActive = pauseMenuUI.activeSelf;
-            bool targetState = !isCurrentlyActive;
-
-            pauseMenuUI.SetActive(targetState);
-
-            // Berhentikan waktu total (0 = berhenti, 1 = jalan)
-            Time.timeScale = targetState ? 0f : 1f;
-
-            // Pastikan kursor muncul agar bisa klik tombol menu
-            Cursor.visible = targetState;
-
-            Debug.Log(targetState ? "Game Paused (Local)" : "Game Resumed (Local)");
-        }
-        TogglePause();
-    }
-
     private void ResumeGame()
     {
         AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
+
         Time.timeScale = 1f;
+
+        if (pauseMenuUI != null && MainMenuAni != null)
+        {
+            MainMenuAni.SetTrigger("Up");
+            StartCoroutine(MatikanPanelDelay(0.5f));
+        }
+    }
+
+    private System.Collections.IEnumerator MatikanPanelDelay(float delayWaktu)
+    {
+        yield return new WaitForSeconds(delayWaktu);
+
         if (pauseMenuUI != null)
         {
             pauseMenuUI.SetActive(false);
-        }
-        else
-        {
-            print("I DONT SEE SHIT");
         }
     }
 
@@ -103,15 +97,10 @@ public class ButtonManager : MonoBehaviour
         AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
 
         isPaused = false;
-        Time.timeScale = 1f;
-
-        // 3. Matikan UI
-        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
-        if (gameOverUI != null) gameOverUI.SetActive(false);
+        //if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
+        //if (gameOverUI != null) gameOverUI.SetActive(false);
 
         Transisi.instance.RestartScene();
-
-
     }
 
 

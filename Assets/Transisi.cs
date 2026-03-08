@@ -9,29 +9,17 @@ public class Transisi : MonoBehaviour
     public Animator TransitionFade;
     public Animator TransitionStart;
 
-    public float transitiononTime = 1f;
+    public float transitionTimeFade = 1f;
+    public float transitionTimeStart = 2f;
 
     public static Transisi instance;
 
-    //public PlayerMovement playerScript;
 
     public void Start()
     {
         instance = this;
         Debug.Log("Transisi instance set: " + instance);
     }
-
-    //private IEnumerator BukaLayarDelay()
-    //{
-    //    // Tunggu 1 frame
-    //    yield return null;
-
-    //    if (Transition != null)
-    //    {
-    //        Transition.SetTrigger("Terangkan");
-    //        Debug.Log("Terangi dunia ini nak.");
-    //    }
-    //}
 
     public void MasukGame()
     {
@@ -50,28 +38,6 @@ public class Transisi : MonoBehaviour
         StartCoroutine(AktifkanTransisi("MainMenu", TransitionFade, "Gelapkan"));
     }
 
-    //public IEnumerator AktifkanTransisi(string sceneName, Animator transition, string trigger)
-    //{
-    //    if (transition != null)
-    //    {
-    //        transition.SetTrigger(trigger);
-    //        Debug.Log("Mambo Transisi");
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("Transition Animator not assigned!");
-    //    }
-
-    //    yield return new WaitForSecondsRealtime(transitiononTime);
-
-    //    ////playerScript.isDead = false;
-    //    SceneManager.LoadScene(sceneName);
-    //    Debug.Log("Currently playing" + transition + trigger);
-    //    ScoreManager.instance.ResetScore();
-
-
-    //}
-
     public IEnumerator AktifkanTransisi(string sceneName, Animator transition, string trigger)
     {
         if (transition != null)
@@ -84,7 +50,20 @@ public class Transisi : MonoBehaviour
             Debug.LogWarning("Transition Animator not assigned!");
         }
 
-        yield return new WaitForSecondsRealtime(transitiononTime);
+        if(transition == TransitionFade)
+        {
+            yield return new WaitForSecondsRealtime(transitionTimeFade);
+        }
+        else if(transition == TransitionStart)
+        {
+            yield return new WaitForSecondsRealtime(transitionTimeStart);
+        }
+        else
+        {
+            Debug.LogWarning("Unknown transition animator, using default wait time.");
+            yield return new WaitForSecondsRealtime(1f);
+        }
+
 
         Time.timeScale = 1f;
 
@@ -100,7 +79,6 @@ public class Transisi : MonoBehaviour
             ScoreManager.instance.ResetScore();
         }
 
-        // 6. Reset Player (Mencari player di scene secara otomatis lalu menghidupkannya)
         PlayerMovement player = FindObjectOfType<PlayerMovement>();
         if (player != null)
         {
@@ -115,50 +93,5 @@ public class Transisi : MonoBehaviour
             transition.SetTrigger("Terangkan");
         }
     }
-
-
-    ////////public IEnumerator LooadLevel(string sceneName)
-    ////////{
-    ////////    if (Transition != null)
-    ////////    {
-    ////////        Transition.SetTrigger("Start");
-    ////////        Debug.Log("Mambo Transisi");
-    ////////    }
-    ////////    else
-    ////////    {
-    ////////        Debug.LogWarning("Transition Animator not assigned!");
-    ////////    }
-
-    ////////    // Gunakan Realtime juga di sini
-    ////////    //yield return new WaitForSecondsRealtime(transitiononTime);
-
-    ////////    ////playerScript.isDead = false;
-    ////////    //Time.timeScale = 1f;
-    ////////    yield return new WaitForSeconds(transitiononTime);
-    ////////    SceneManager.LoadScene(sceneName);
-    ////////    Debug.Log("Loading scene by name: " + sceneName);
-    ////////}
-
-    //public IEnumerator LooadLevelStart(string sceneName)
-    //{
-    //    if (TransitionStart != null)
-    //    {
-    //        TransitionStart.SetTrigger("Start");
-    //        Debug.Log("Mambo Transisi");
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("Transition Animator not assigned!");
-    //    }
-
-    //    // Gunakan Realtime juga di sini
-    //    //yield return new WaitForSecondsRealtime(transitiononTime);
-
-    //    ////playerScript.isDead = false;
-    //    //Time.timeScale = 1f;
-    //    yield return new WaitForSeconds(transitiononTime);
-    //    SceneManager.LoadScene(sceneName);
-    //    Debug.Log("Loading scene by name: " + sceneName);
-    //}
 
 }

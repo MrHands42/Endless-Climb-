@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Part 2: Original PlayerMovement Update logic - Handle input, with isDead check to block movement
-        if (isDead || isDashing)
+        if (isDead || isDashing || ButtonManager.isPaused)
         {
             return;  // Block input if dead or dashing
         }
