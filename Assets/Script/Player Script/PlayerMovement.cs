@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 posisiTerakhir;
     private Vector3 posisiAsliBody;
 
+    private bool horizontalDash = true;
+
     private Rigidbody2D rb;
     void Start()
     {
@@ -95,25 +97,25 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log("Key W pressed: Setting Direction to 1 (Up)");
                 if (animator != null) animator.SetInteger("Direction", 1);
-                StartDash(0f, MoveDistance);
+                StartDash(0f, MoveDistance, false);
             }
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 Debug.Log("Key S pressed: Setting Direction to 2 (Down)");
                 if (animator != null) animator.SetInteger("Direction", 2);
-                StartDash(0f, -MoveDistance);
+                StartDash(0f, -MoveDistance, false);
             }
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 Debug.Log("Key A pressed: Setting Direction to 3 (Left)");
                 if (animator != null) animator.SetInteger("Direction", 3);
-                StartDash(-MoveDistance, 0f);
+                StartDash(-MoveDistance, 0f, true);
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 Debug.Log("Key D pressed: Setting Direction to 4 (Right)");
                 if (animator != null) animator.SetInteger("Direction", 4);
-                StartDash(MoveDistance, 0f);
+                StartDash(MoveDistance, 0f, true);
             }
         }
     }
@@ -217,13 +219,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void StartDash(float deltaX, float deltaY)
+    private void StartDash(float deltaX, float deltaY, bool HorizontalOrNot)
     {
         float newX = currentX + deltaX;
         float newY = currentY + deltaY;
         if (newX >= GridMin && newX <= GridMax && newY >= GridMin && newY <= GridMax)
         {
+            if(HorizontalOrNot)
+            {
+                horizontalDash = true;
+            }
+            else
+            {
+                horizontalDash = false;
+            }
+
             StartCoroutine(DashCoroutine(newX, newY, deltaX, deltaY));
+
+
             if (AudioManager.AudioManagerInstance != null)
             {
                 AudioManager.AudioManagerInstance.Play(SFX.ChangeGrid);
@@ -238,7 +251,11 @@ public class PlayerMovement : MonoBehaviour
 
     private System.Collections.IEnumerator DashCoroutine(float targetX, float targetY, float deltaX, float deltaY)
     {
-        Unflip(); // Pastikan unflip dulu sebelum dash, biar animasi jalan dengan benar
+        if (horizontalDash)
+        {
+            Unflip();
+        }
+
         isDashing = true;
         Debug.Log("Dash started. Direction should be animating now.");
 
