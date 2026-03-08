@@ -107,7 +107,7 @@ public class AudioManager : MonoBehaviour
         {
             playBGM(MainMenu);
         } 
-        else if (currentScene.name == "SampleScene") // main menu
+        else if (currentScene.name == "GameScene") // Gamenya
         {
             playBGM(BGM);
         } 

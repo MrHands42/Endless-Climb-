@@ -1417,7 +1417,7 @@ GameObject:
   - component: {fileID: 305698565}
   - component: {fileID: 305698567}
   m_Layer: 0
-  m_Name: MenuManager
+  m_Name: GeneralManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1465,7 +1465,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 1845677331}
   gameOverUI: {fileID: 1616318637}
-  playerScript: {fileID: 1783394858}
 --- !u!1 &316508163
 GameObject:
   m_ObjectHideFlags: 0
@@ -1498,8 +1497,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2025843522}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1858,7 +1857,7 @@ Transform:
   m_GameObject: {fileID: 368027384}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.05, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2228,8 +2227,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 369985058}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2858,8 +2857,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 305698567}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 1783334475}
+        m_TargetAssemblyTypeName: Transisi, Assembly-CSharp
         m_MethodName: BackToMenu
         m_Mode: 1
         m_Arguments:
@@ -3518,9 +3517,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Transisi, Assembly-CSharp
-        m_MethodName: RestartScene
+      - m_Target: {fileID: 305698567}
+        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+        m_MethodName: Restart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3794,6 +3793,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7277260833008203506, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
   m_PrefabInstance: {fileID: 2064502160}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1783334475 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6165397483666831666, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
+  m_PrefabInstance: {fileID: 2064502160}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d63d6da4f531612469bfb388ceb732de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1783394856
 GameObject:
   m_ObjectHideFlags: 0
@@ -4060,7 +4070,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1845677332
 RectTransform:
   m_ObjectHideFlags: 0

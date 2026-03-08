@@ -15,14 +15,11 @@ public class Transisi : MonoBehaviour
 
     //public PlayerMovement playerScript;
 
-    //public void Start()
-    //{
-    //    instance = this;
-    //    Debug.Log("Transisi instance set: " + instance);
-
-    //    // PERBAIKAN 1: Gunakan Coroutine untuk "Terangkan" agar Animator punya waktu 1 frame untuk siap
-    //    StartCoroutine(BukaLayarDelay());
-    //}
+    public void Start()
+    {
+        instance = this;
+        Debug.Log("Transisi instance set: " + instance);
+    }
 
     //private IEnumerator BukaLayarDelay()
     //{
@@ -38,6 +35,7 @@ public class Transisi : MonoBehaviour
 
     public void MasukGame()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
         StartCoroutine(AktifkanTransisi("GameScene", TransitionStart, "Mulai"));
     }
 
@@ -48,15 +46,38 @@ public class Transisi : MonoBehaviour
 
     public void BackToMenu()
     {
+        AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
         StartCoroutine(AktifkanTransisi("MainMenu", TransitionFade, "Gelapkan"));
     }
+
+    //public IEnumerator AktifkanTransisi(string sceneName, Animator transition, string trigger)
+    //{
+    //    if (transition != null)
+    //    {
+    //        transition.SetTrigger(trigger);
+    //        Debug.Log("Mambo Transisi");
+    //    }
+    //    else
+    //    {
+    //        Debug.LogWarning("Transition Animator not assigned!");
+    //    }
+
+    //    yield return new WaitForSecondsRealtime(transitiononTime);
+
+    //    ////playerScript.isDead = false;
+    //    SceneManager.LoadScene(sceneName);
+    //    Debug.Log("Currently playing" + transition + trigger);
+    //    ScoreManager.instance.ResetScore();
+
+
+    //}
 
     public IEnumerator AktifkanTransisi(string sceneName, Animator transition, string trigger)
     {
         if (transition != null)
         {
             transition.SetTrigger(trigger);
-            Debug.Log("Mambo Transisi");
+            Debug.Log("Mambo Transisi: " + trigger);
         }
         else
         {
@@ -65,12 +86,35 @@ public class Transisi : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(transitiononTime);
 
-        ////playerScript.isDead = false;
+        Time.timeScale = 1f;
+
+        if (ButtonManager.Instance != null)
+        {
+            ButtonManager.isPaused = false;
+            if (ButtonManager.Instance.pauseMenuUI != null) ButtonManager.Instance.pauseMenuUI.SetActive(false);
+            if (ButtonManager.Instance.gameOverUI != null) ButtonManager.Instance.gameOverUI.SetActive(false);
+        }
+
+        if (ScoreManager.instance != null)
+        {
+            ScoreManager.instance.ResetScore();
+        }
+
+        // 6. Reset Player (Mencari player di scene secara otomatis lalu menghidupkannya)
+        PlayerMovement player = FindObjectOfType<PlayerMovement>();
+        if (player != null)
+        {
+            player.isDead = false;
+        }
+
         SceneManager.LoadScene(sceneName);
-        Debug.Log("Currently playing" + transition + trigger);
+        Debug.Log("Loading Scene: " + sceneName);
 
+        if(trigger == "Gelapkan")
+        {
+            transition.SetTrigger("Terangkan");
+        }
     }
-
 
 
     ////////public IEnumerator LooadLevel(string sceneName)

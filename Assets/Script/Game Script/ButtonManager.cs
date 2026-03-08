@@ -11,8 +11,6 @@ public class ButtonManager : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject gameOverUI;
 
-    public PlayerMovement playerScript;
-
     void Awake()
     {
         if (Instance == null)
@@ -103,16 +101,17 @@ public class ButtonManager : MonoBehaviour
     public void Restart()
     {
         AudioManager.AudioManagerInstance.Play(SFX.GeneralButton);
-        //pauseMenuUI.SetActive(false);
-        //gameOverUI.SetActive(false);
-
 
         isPaused = false;
+        Time.timeScale = 1f;
+
+        // 3. Matikan UI
+        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
+        if (gameOverUI != null) gameOverUI.SetActive(false);
+
         Transisi.instance.RestartScene();
 
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        //Transisi.instance.LoadCurrentLevel();
     }
 
 

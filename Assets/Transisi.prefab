@@ -63,7 +63,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 516203938840846779}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -354,8 +354,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6165397483666831666}
         m_TargetAssemblyTypeName: Transisi, Assembly-CSharp
-        m_MethodName: KeLevel
-        m_Mode: 5
+        m_MethodName: MasukGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1401,6 +1401,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63d6da4f531612469bfb388ceb732de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Transition: {fileID: 1473977116510849966}
+  TransitionFade: {fileID: 3084706940185584005}
+  TransitionStart: {fileID: 1473977116510849966}
   transitiononTime: 2
-  playerScript: {fileID: 0}
