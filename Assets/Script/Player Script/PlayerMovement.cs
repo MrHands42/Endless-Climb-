@@ -238,6 +238,7 @@ public class PlayerMovement : MonoBehaviour
 
     private System.Collections.IEnumerator DashCoroutine(float targetX, float targetY, float deltaX, float deltaY)
     {
+        Unflip(); // Pastikan unflip dulu sebelum dash, biar animasi jalan dengan benar
         isDashing = true;
         Debug.Log("Dash started. Direction should be animating now.");
 
@@ -261,16 +262,19 @@ public class PlayerMovement : MonoBehaviour
         isDashing = false;
 
         Debug.Log("Dash ended: Resetting to idle (Direction = 0)");
-        if (animator != null) animator.SetInteger("Direction", 0);
+        if (animator != null)
+        {
+            animator.SetInteger("Direction", 0);
+            if (deltaX < 0)
+            {
+                Unflip();
+            }
+            else if (deltaX > 0)
+            {
+                Flip();
+            }
+        }
 
-        if (deltaX < 0)
-        {
-            Unflip();
-        }
-        else if (deltaX > 0)
-        {
-            Flip();
-        }
 
         // if (ScoreManager.instance != null && deltaY > 0)
         // {
