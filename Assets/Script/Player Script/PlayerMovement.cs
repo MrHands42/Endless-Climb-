@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems; // Added for EventTrigger compatibility
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -35,9 +36,10 @@ public class PlayerMovement : MonoBehaviour
     private bool horizontalDash = true;
 
     private Rigidbody2D rb;
+
     void Start()
     {
-        // Original PlayerMovement Start logic
+        // Initialize Animator
         if (animator == null)
         {
             animator = GetComponentInChildren<Animator>();
@@ -53,6 +55,13 @@ public class PlayerMovement : MonoBehaviour
             animator.enabled = true;
         }
 
+        // Initialize Rigidbody
+        rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
+        {
+            Debug.LogError("Rigidbody2D not found on Player!");
+        }
+
         // Merged from SlipMechanic Start: Initialize idle detection
         mulaiGetarDetik = batasWaktuDiam * (2f / 3f);
         posisiTerakhir = transform.position;
@@ -62,10 +71,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // SINGLE Update method: Merges idle detection/vibration (from SlipMechanic) with input handling (from original PlayerMovement)
     void Update()
     {
-        // Part 1: Merged from SlipMechanic Update - Handle idle detection and vibration
+        // Part 1: Slip Mechanic (Idle Detection) - Always runs unless disabled
         if (!isDead)
         {
             float jarakGerak = Vector3.Distance(transform.position, posisiTerakhir);
@@ -86,38 +94,73 @@ public class PlayerMovement : MonoBehaviour
             posisiTerakhir = transform.position;
         }
 
-        // Part 2: Original PlayerMovement Update logic - Handle input, with isDead check to block movement
-        if (isDead || isDashing || ButtonManager.isPaused)
+        // Part 2: Keyboard Input (For PC Testing Only)
+        // We use #if UNITY_EDITOR to prevent this from running on Android builds
+        #if UNITY_EDITOR
+        if (!isDead && !isDashing && !ButtonManager.isPaused)
         {
-            return;  // Block input if dead or dashing
-        }
-
-        if (!isDead) {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                Debug.Log("Key W pressed: Setting Direction to 1 (Up)");
-                if (animator != null) animator.SetInteger("Direction", 1);
-                StartDash(0f, MoveDistance, false);
+                ExecuteMove(1); // Up
             }
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                Debug.Log("Key S pressed: Setting Direction to 2 (Down)");
-                if (animator != null) animator.SetInteger("Direction", 2);
-                StartDash(0f, -MoveDistance, false);
+                ExecuteMove(2); // Down
             }
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                Debug.Log("Key A pressed: Setting Direction to 3 (Left)");
-                if (animator != null) animator.SetInteger("Direction", 3);
-                StartDash(-MoveDistance, 0f, true);
+                ExecuteMove(3); // Left
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                Debug.Log("Key D pressed: Setting Direction to 4 (Right)");
-                if (animator != null) animator.SetInteger("Direction", 4);
-                StartDash(MoveDistance, 0f, true);
+                ExecuteMove(4); // Right
             }
         }
+        #endif
+    }
+
+    // --- UI Button Methods (Called by EventTrigger) ---
+    public void OnMoveUp()    { ExecuteMove(1); }
+    public void OnMoveDown()  { ExecuteMove(2); }
+    public void OnMoveLeft()  { ExecuteMove(3); }
+    public void OnMoveRight() { ExecuteMove(4); }
+
+    // --- Shared Movement Logic ---
+    private void ExecuteMove(int direction)
+    {
+        // Safety Checks
+        if (isDead || isDashing || ButtonManager.isPaused) return;
+
+        float deltaX = 0f;
+        float deltaY = 0f;
+        bool isHorizontal = false;
+
+        // Map Direction to Movement
+        switch (direction)
+        {
+            case 1: // Up
+                deltaY = MoveDistance;
+                if (animator != null) animator.SetInteger("Direction", 1);
+                break;
+            case 2: // Down
+                deltaY = -MoveDistance;
+                if (animator != null) animator.SetInteger("Direction", 2);
+                break;
+            case 3: // Left
+                deltaX = -MoveDistance;
+                isHorizontal = true;
+                if (animator != null) animator.SetInteger("Direction", 3);
+                break;
+            case 4: // Right
+                deltaX = MoveDistance;
+                isHorizontal = true;
+                if (animator != null) animator.SetInteger("Direction", 4);
+                break;
+            default:
+                return;
+        }
+
+        StartDash(deltaX, deltaY, isHorizontal);
     }
 
     // Merged from SlipMechanic: Vibration methods
@@ -145,8 +188,6 @@ public class PlayerMovement : MonoBehaviour
         StopAllCoroutines();
         FindObjectOfType<Collector>().BreakShield();    // Memastikan player ga jatoh bawa shield + biar keren aja
 
-        //ResetPosisiBody();
-
         Debug.Log("Player Jatuh!");
 
         if (animator != null) animator.SetInteger("Direction", 7);
@@ -156,7 +197,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (GetComponent<Collider2D>() != null)
             GetComponent<Collider2D>().enabled = false;
-
 
         if (rb == null)
         {
@@ -291,11 +331,5 @@ public class PlayerMovement : MonoBehaviour
                 Flip();
             }
         }
-
-
-        // if (ScoreManager.instance != null && deltaY > 0)
-        // {
-        //     ScoreManager.instance.AddVerticalScore(deltaY);
-        // }
     }
 }
