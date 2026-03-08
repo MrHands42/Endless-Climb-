@@ -1,88 +1,125 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI; // Wajib dipanggil untuk mengakses komponen UI
+using UnityEngine.UI;
 
-public class EarthquakeUI : MonoBehaviour
+public class ImageShakeController : MonoBehaviour
 {
-    [Header("Pengaturan Gempa")]
-    public float durasiGempa = 0.5f;     // Berapa lama gempanya terjadi (detik)
-    public float kekuatanGempa = 15f;    // Seberapa kuat guncangannya (dalam Piksel)
+    [Header("TARGETS")]
+    public Image[] targetsToShake; // Masukkan Image yang mau digetarkan di sini
 
-    // Referensi komponen UI
-    private RectTransform rectTransform;
-    private Vector2 posisiAsli;
-    private Coroutine getarCoroutine;
+    [Header("SHAKE SETTINGS")]
+    public float baseIntensity = 5f; // Kekuatan dasar getaran
+    public float shakeSpeed = 10f;   // Kecepatan getaran
 
-    [Header("Uji Coba (Tekan G di Keyboard)")]
-    public bool aktifkanTombolTest = true;
+    [Header("AUTO START (UNTUK TESTING)")]
+    public bool autoStartShake = false; // Set true untuk auto-start saat game mulai
+    public float autoStartIntensity = 5f;
+    public float autoStartDuration = 2f;
 
-    void Awake()
-    {
-        // Mengambil komponen RectTransform (Wajib untuk objek Canvas)
-        rectTransform = GetComponent<RectTransform>();
-
-        if (rectTransform == null)
-        {
-            Debug.LogError("Skrip EarthquakeUI harus dipasang di objek Canvas (UI)!");
-        }
-    }
+    private Vector2[] originalPositions;
+    private bool isShaking = false;
+    private float shakeTimer = 0f;
+    private float currentDuration = 0f;
 
     void Start()
     {
-        // Menyimpan posisi awal gambar saat game dimulai
-        if (rectTransform != null)
+        // Simpan posisi awal semua target
+        originalPositions = new Vector2[targetsToShake.Length];
+        int validTargets = 0;
+
+        for (int i = 0; i < targetsToShake.Length; i++)
         {
-            posisiAsli = rectTransform.anchoredPosition;
+            if (targetsToShake[i] != null)
+            {
+                RectTransform rt = targetsToShake[i].GetComponent<RectTransform>();
+                if (rt != null)
+                {
+                    originalPositions[i] = rt.anchoredPosition;
+                    validTargets++;
+                }
+                else
+                {
+                    Debug.LogWarning("ImageShakeController: Image " + i + " tidak punya RectTransform!");
+                }
+            }
+        }
+
+        if (validTargets == 0)
+        {
+            Debug.LogError("ImageShakeController: Tidak ada target valid! Pastikan targetsToShake terisi.");
+        }
+        else
+        {
+            Debug.Log("ImageShakeController: " + validTargets + " target valid ditemukan.");
+        }
+
+        // Auto-start untuk testing
+        if (autoStartShake)
+        {
+            StartShake(autoStartIntensity, autoStartDuration);
         }
     }
 
     void Update()
     {
-        // Hanya untuk testing di editor, tekan tombol G untuk memicu gempa
-        if (aktifkanTombolTest && Input.GetKeyDown(KeyCode.G))
+        if (!isShaking) return;
+
+        // Update timer
+        shakeTimer += Time.deltaTime;
+
+        // Cek apakah durasi habis (jika duration > 0)
+        if (currentDuration > 0 && shakeTimer >= currentDuration)
         {
-            MulaiGempa();
+            StopShake();
+            return;
+        }
+
+        // Hitung kekuatan getaran
+        float currentIntensity = baseIntensity;
+
+        // Efek gempa acak
+        float offsetX = Random.Range(-1f, 1f) * currentIntensity;
+        float offsetY = Random.Range(-1f, 1f) * currentIntensity;
+
+        // Shake semua target
+        for (int i = 0; i < targetsToShake.Length; i++)
+        {
+            if (targetsToShake[i] != null)
+            {
+                RectTransform rt = targetsToShake[i].GetComponent<RectTransform>();
+                if (rt != null)
+                {
+                    rt.anchoredPosition = originalPositions[i] + new Vector2(offsetX, offsetY);
+                }
+            }
         }
     }
 
-    /// <summary>
-    /// Panggil fungsi ini dari skrip lain (misal saat player nabrak obstacle atau kena damage)
-    /// </summary>
-    public void MulaiGempa()
+    // Method untuk memulai getaran
+    public void StartShake(float intensity, float duration)
     {
-        // Jika sedang ada gempa yang berjalan, hentikan dulu agar tidak bentrok
-        if (getarCoroutine != null)
-        {
-            StopCoroutine(getarCoroutine);
-        }
-
-        // Mulai guncangan baru
-        getarCoroutine = StartCoroutine(RutinitasGempa());
+        isShaking = true;
+        shakeTimer = 0f;
+        currentDuration = duration;
+        baseIntensity = intensity;
+        Debug.Log("ImageShakeController: Shake dimulai! Intensitas: " + intensity + ", Durasi: " + duration);
     }
 
-    private IEnumerator RutinitasGempa()
+    // Method untuk menghentikan getaran
+    public void StopShake()
     {
-        float waktuBerjalan = 0f;
-
-        // Looping guncangan selama durasi belum habis
-        while (waktuBerjalan < durasiGempa)
+        isShaking = false;
+        shakeTimer = 0f;
+        for (int i = 0; i < targetsToShake.Length; i++)
         {
-            // Mencari titik acak dalam radius kekuatan gempa
-            float acakX = posisiAsli.x + Random.Range(-kekuatanGempa, kekuatanGempa);
-            float acakY = posisiAsli.y + Random.Range(-kekuatanGempa, kekuatanGempa);
-
-            // Terapkan posisi baru ke gambar
-            rectTransform.anchoredPosition = new Vector2(acakX, acakY);
-
-            // Tambah waktu. Kita pakai unscaledDeltaTime agar gempa tetap jalan 
-            // walau game sedang di-pause (Time.timeScale = 0)
-            waktuBerjalan += Time.unscaledDeltaTime;
-
-            // Tunggu frame berikutnya
-            yield return null;
+            if (targetsToShake[i] != null)
+            {
+                RectTransform rt = targetsToShake[i].GetComponent<RectTransform>();
+                if (rt != null)
+                {
+                    rt.anchoredPosition = originalPositions[i];
+                }
+            }
         }
-
-        // GEMPA SELESAI: Wajib kembalikan gambar persis ke titik aslinya agar UI tidak miring/cacat
-        rectTransform.anchoredPosition = posisiAsli;
+        Debug.Log("ImageShakeController: Shake dihentikan.");
     }
 }

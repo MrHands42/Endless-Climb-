@@ -3048,7 +3048,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Transisi
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 602069506472425225, guid: 4b0eb4ccacf4ccc46a95d6adb1034d7e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

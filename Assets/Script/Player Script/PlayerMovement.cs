@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
             if (jarakGerak <= toleransiGerak)
             {
                 timerDiam += Time.deltaTime;
-                if (timerDiam > mulaiGetarDetik) GetarkanBody();
+                if (timerDiam > mulaiGetarDetik && !ButtonManager.isPaused) GetarkanBody();
                 if (timerDiam >= batasWaktuDiam) RopeSlip();
             }
             else
